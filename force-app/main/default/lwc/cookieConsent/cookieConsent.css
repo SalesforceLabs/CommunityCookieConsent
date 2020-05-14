@@ -1,0 +1,83 @@
+/**
+ * Created by stephan.garcia on 2020-04-06.
+ */
+
+.word-wrap{
+
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+
+}
+
+.cookiecon-mobile-section{
+
+    display:none;
+
+}
+
+.cookiecon-desktop-section{
+
+    display:block;
+
+}
+
+.cookiecon-content-container{
+
+    min-height: 550px;
+
+}
+
+.cookiecon-spinner-container{
+
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+
+}
+
+.cookiecon-mandatory-text{
+
+    font-weight:bold;
+    margin-top:2px;
+}
+
+.cookiecon-text-icon-heading{
+
+    margin-bottom:13px;
+}
+
+.cookiecon-footer-container{
+
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 999;
+
+
+}
+
+
+
+@media only screen and (max-width: 480px) {
+
+    .cookiecon-mobile-section{
+
+        display:block;
+
+    }
+
+    .cookiecon-desktop-section{
+
+        display:none;
+
+    }
+
+    .cookiecon-content-container{
+
+        min-height: 350px;
+
+    }
+
+
+}

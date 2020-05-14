@@ -1,0 +1,377 @@
+<!--
+ - Created by stephan.garcia on 2020-03-10.
+ -->
+
+<!-- Cookie Consent -->
+<template>
+    <div class="slds-grid slds-wrap">
+        <div class="slds-size--1-of-1">
+            <div class="slds-grid slds-wrap">
+                <template if:true={pageState}>
+                    <div class="slds-size--1-of-1">
+                        <template if:true={loading}>
+                            <div class="cookiecon-spinner-container">
+                                <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+                            </div>
+                        </template>
+                        <template if:false={loading}>
+                            <ul class="slds-list--vertical">
+                                <template for:each={cookieData} for:item="section" for:index="i">
+                                    <li class="slds-item slds-box slds-box--border slds-has-bottom-magnet slds-has-top-magnet"
+                                        key={section.i}>
+                                        <!-- todo: remove font weight from style and move to css -->
+                                        <div class="slds-grid slds-wrap slds-p-around--small">
+                                            <div class="slds-size--1-of-1">
+                                                <div class="slds-grid slds-wrap">
+                                                    <div class="slds-size--9-of-12 slds-small-size--5-of-6 slds-medium-size--5-of-6 slds-large-size--5-of-6 slds-align-middle">
+                                                        <div class="slds-grid slds-wrap">
+                                                            <div class="slds-size--1-of-1">
+                                                                <div class="slds-grid">
+                                                                    <template if:false={section.Mandatory}>
+                                                                        <div class="slds-size--1-of-1">
+                                                                            <p class="slds-text-heading--small"
+                                                                               style="font-weight:bold">
+                                                                                {section.SectionName}
+                                                                            </p>
+                                                                        </div>
+                                                                    </template>
+                                                                    <template if:true={section.Mandatory}>
+                                                                        <div>
+                                                                            <p class="slds-text-heading--small cookiecon-mandatory-text">
+                                                                                {section.SectionName}
+                                                                            </p>
+                                                                        </div>
+                                                                        <div class="slds-p-left--xx-small">
+                                                                            <lightning-helptext
+                                                                                    content={section.AdditionalInformation}></lightning-helptext>
+                                                                        </div>
+                                                                    </template>
+                                                                </div>
+                                                            </div>
+                                                            <div class="slds-size--1-of-1 cookiecon-desktop-section">
+                                                                <p class="slds-text-body--regular slds-wrap">
+                                                                    {section.SectionDescription}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-size--3-of-12 slds-small-size--1-of-6 slds-medium-size--1-of-6 slds-large-size--1-of-6 slds-align--absolute-center">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="slds-size--1-of-1 slds-align-middle cookiecon-mobile-section">
+                                                <p class="slds-text-body--regular slds-wrap">
+                                                    {section.SectionDescription}</p>
+                                            </div>
+                                            <div class="slds-size--1-of-1 slds-p-top--small">
+                                                <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered slds-border--left slds-border--right">
+                                                    <thead>
+                                                    <tr class="slds-line-height_reset">
+                                                        <th class="" scope="col">
+                                                            <div class="slds-truncate" title="Name">Name
+                                                            </div>
+                                                        </th>
+                                                        <th class="" scope="col">
+                                                            <div class="slds-truncate" title="Description">
+                                                                Description
+                                                            </div>
+                                                        </th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <template for:each={section.SectionCookies}
+                                                              for:item="item"
+                                                              for:index="i">
+                                                        <tr class="slds-hint-parent" key={item.i}>
+                                                            <th class="slds-cell-wrap word-wrap"
+                                                                data-label="Name" scope="row"
+                                                                style="width:30%">
+                                                                <p class="slds-hyphenate" title="Name">
+                                                                    {item.Name}</p>
+                                                            </th>
+                                                            <td class="slds-cell-wrap slds-wrap cookiecon-word-wrap"
+                                                                data-label="Name" style="width:70%">
+                                                                <p class="slds-wrap" title="Description">
+                                                                    {item.cookiecon__Description__c}</p>
+                                                            </td>
+                                                        </tr>
+                                                    </template>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </template>
+                            </ul>
+                        </template>
+                    </div>
+                </template>
+                <template if:true={modalState}>
+                    <div class="slds-size--1-of-1">
+                        <template if:true={shouldIShowCookieDialog}>
+                            <section role="dialog" tabindex="-1" class="slds-modal slds-slide-up-open"
+                                     aria-labelledby="modal-heading-01" aria-modal="true"
+                                     aria-describedby="modal-content-id-1">
+                                <div class="slds-modal__container">
+                                    <header class="slds-modal__header">
+                                        <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">
+                                            {headingLabel}</h2>
+                                    </header>
+                                    <div class="slds-modal__content slds-p-around_medium cookiecon-content-container"
+                                         id="modal-content-id-1">
+                                        <p class="slds-p-bottom--small">{instructions}</p>
+                                        <template if:true={loading}>
+                                            <div class="cookiecon-spinner-container">
+                                                <lightning-spinner alternative-text="Loading"
+                                                                   size="medium"></lightning-spinner>
+                                            </div>
+                                        </template>
+                                        <template if:false={loading}>
+                                            <ul class="slds-list--vertical">
+                                                <template for:each={cookieData} for:item="section" for:index="i">
+                                                    <li class="slds-item slds-box slds-box--border slds-has-bottom-magnet slds-has-top-magnet"
+                                                        key={section.i}>
+                                                        <!-- todo: remove font weight from style and move to css -->
+                                                        <div class="slds-grid slds-wrap slds-p-around--small">
+                                                            <div class="slds-size--1-of-1">
+                                                                <div class="slds-grid slds-wrap">
+                                                                    <div class="slds-size--2-of-12 slds-small-size--1-of-6 slds-medium-size--1-of-6 slds-large-size--1-of-6 slds-align--absolute-center"
+                                                                         data-value={section.SectionName}
+                                                                         onclick={showSection}>
+                                                                        <lightning-icon icon-name={section.SectionIcon}
+                                                                                        size="small"></lightning-icon>
+                                                                    </div>
+                                                                    <div class="slds-size--6-of-12 slds-small-size--4-of-6 slds-medium-size--4-of-6 slds-large-size--4-of-6 slds-align-middle">
+                                                                        <div class="slds-grid slds-wrap">
+                                                                            <div class="slds-size--1-of-1">
+                                                                                <div class="slds-grid">
+                                                                                    <template
+                                                                                            if:false={section.Mandatory}>
+                                                                                        <div class="slds-size--1-of-1">
+                                                                                            <p class="slds-text-heading--small"
+                                                                                               style="font-weight:bold">
+                                                                                                {section.SectionName}
+                                                                                            </p>
+                                                                                        </div>
+                                                                                    </template>
+                                                                                    <template
+                                                                                            if:true={section.Mandatory}>
+                                                                                        <div>
+                                                                                            <p class="slds-text-heading--small cookiecon-mandatory-text">
+                                                                                                {section.SectionName}
+                                                                                            </p>
+                                                                                        </div>
+                                                                                        <div class="slds-p-left--xx-small">
+                                                                                            <lightning-helptext
+                                                                                                    content={section.AdditionalInformation}></lightning-helptext>
+                                                                                        </div>
+                                                                                    </template>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="slds-size--1-of-1 cookiecon-desktop-section">
+                                                                                <p class="slds-text-body--regular slds-wrap">
+                                                                                    {section.SectionDescription}</p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="slds-size--3-of-12 slds-small-size--1-of-6 slds-medium-size--1-of-6 slds-large-size--1-of-6 slds-align--absolute-center">
+                                                                        <lightning-input type="toggle"
+                                                                                         name={section.RelatedAuthorizationFormId}
+                                                                                         checked={section.DefaultValue}
+                                                                                         disabled={section.Mandatory}
+                                                                                         label=""
+                                                                                         message-toggle-active="Accept"
+                                                                                         message-toggle-inactive="Decline"
+                                                                                         onchange={updateSectionStatus}></lightning-input>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="slds-size--1-of-1 slds-align-middle cookiecon-mobile-section">
+                                                                <p class="slds-text-body--regular slds-wrap">
+                                                                    {section.SectionDescription}</p>
+                                                            </div>
+                                                            <template if:true={section.ShowSection}>
+                                                                <div class="slds-size--1-of-1 slds-p-top--small">
+                                                                    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered slds-border--left slds-border--right">
+                                                                        <thead>
+                                                                        <tr class="slds-line-height_reset">
+                                                                            <th class="" scope="col">
+                                                                                <div class="slds-truncate" title="Name">
+                                                                                    Name
+                                                                                </div>
+                                                                            </th>
+                                                                            <th class="" scope="col">
+                                                                                <div class="slds-truncate"
+                                                                                     title="Description">
+                                                                                    Description
+                                                                                </div>
+                                                                            </th>
+                                                                        </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                        <template for:each={section.SectionCookies}
+                                                                                  for:item="item"
+                                                                                  for:index="i">
+                                                                            <tr class="slds-hint-parent" key={item.i}>
+                                                                                <th class="slds-cell-wrap word-wrap"
+                                                                                    data-label="Name" scope="row"
+                                                                                    style="width:30%">
+                                                                                    <p class="slds-hyphenate"
+                                                                                       title="Name">
+                                                                                        {item.Name}</p>
+                                                                                </th>
+                                                                                <td class="slds-cell-wrap slds-wrap cookiecon-word-wrap"
+                                                                                    data-label="Name" style="width:70%">
+                                                                                    <p class="slds-wrap"
+                                                                                       title="Description">
+                                                                                        {item.cookiecon__Description__c}</p>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </template>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </template>
+                                                        </div>
+                                                    </li>
+                                                </template>
+                                            </ul>
+                                        </template>
+                                    </div>
+                                    <footer class="slds-modal__footer">
+                                        <div class="cookiecon-desktop-section">
+                                            <div class="slds-grid slds-grid--align-spread">
+                                                <div class="slds-col">
+                                                    <lightning-button class="slds-m-right--small" label={rejectButtonLabel}
+                                                                      onclick={rejectCookies}></lightning-button>
+                                                </div>
+                                                <div class="slds-col">
+                                                    <lightning-button class="slds-m-right--small" label={informationButtonLabel}
+                                                                      onclick={informationButtonSelected}></lightning-button>
+                                                    <lightning-button label={confirmButtonLabel} variant="brand"
+                                                                      onclick={acceptCookies}></lightning-button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="cookiecon-mobile-section">
+                                            <div class="slds-grid slds-wrap">
+                                                <div class="slds-size--1-of-1">
+                                                    <div class="slds-p-around-xx-small">
+                                                        <button type="submit"
+                                                                class="slds-button slds-button_neutral slds-button_stretch"
+                                                                onclick={rejectCookies}>
+                                                            {rejectButtonLabel}
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="slds-size--1-of-1 slds-p-top--small">
+                                                    <div class="slds-p-around-xx-small">
+                                                        <button type="submit"
+                                                                class="slds-button slds-button_neutral slds-button_stretch"
+                                                                onclick={informationButtonSelected}>
+                                                            {informationButtonLabel}
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="slds-size--1-of-1 slds-p-top--small">
+                                                    <div class="slds-p-around-xx-small">
+                                                        <button type="submit"
+                                                                class="slds-button slds-button_brand slds-button_stretch"
+                                                                onclick={acceptCookies}>{confirmButtonLabel}
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </footer>
+                                </div>
+                            </section>
+                            <div class="slds-backdrop slds-backdrop_open"></div>
+                        </template>
+                    </div>
+                </template>
+                <template if:true={footerState}>
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-size--1-of-1">
+                            <div class="cookiecon-footer-container" style={backgroundStyle}>
+                                <div class="slds-grid slds-wrap">
+                                    <div class="slds-size--1-of-1 slds-p-top--medium slds-p-bottom--medium slds-p-left--xx-large slds-p-right--xx-large">
+                                        <div class="slds-grid slds-wrap">
+                                            <div class="slds-size--1-of-1 slds-small-size--2-of-3 slds-medium-size--3-of-4 slds-large-size--3-of-4 ">
+                                                <div class="slds-grid slds-wrap slds-p-around--medium">
+                                                    <div class="slds-size--1-of-1">
+                                                        <h2 style={headingStyle}>{headingLabel}</h2>
+                                                    </div>
+                                                    <div class="slds-size--1-of-1 slds-p-top--small">
+                                                        <p style={textStyle}>{instructions}</p>
+                                                    </div>
+                                                    <div class=" slds-size--1-of-1 slds-p-top--small">
+                                                        <ul class="slds-list_horizontal slds-has-dividers_left">
+                                                            <li class="slds-item">
+                                                                <p><a onclick={informationButtonSelected}
+                                                                      style={linkStyle}>{informationButtonLabel}</a>
+                                                                </p>
+                                                            </li>
+                                                            <li class="slds-item">
+                                                                <p><a onclick={cookiesButtonSelected}
+                                                                      style={linkStyle}>{viewCookiesLabel}</a>
+                                                                </p>
+                                                            </li>
+                                                            <li class="slds-item">
+                                                                <p><a onclick={rejectCookies}
+                                                                      style={linkStyle}>{rejectButtonLabel}</a>
+                                                                </p>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="cookiecon-desktop-section slds-size--1-of-1 slds-small-size--1-of-3 slds-medium-size--1-of-4 slds-large-size--1-of-4 slds-align--absolute-center">
+                                                <div class="slds-p-around-xx-small">
+                                                    <button type="submit" class="slds-button slds-button_brand"
+                                                            onclick={acceptCookies}>{confirmButtonLabel}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="slds-size--1-of-1 cookiecon-mobile-section">
+                                                <div class="slds-p-around-xx-small">
+                                                    <button type="submit"
+                                                            class="slds-button slds-button_brand slds-button_stretch"
+                                                            onclick={acceptCookies}>{confirmButtonLabel}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+                <template if:true={preview}>
+                    <div class="slds-size--1-of-1">
+                        <div class="slds-box slds-m-bottom--medium slds-theme_info">
+                            <div class="slds-grid slds-wrap">
+                                <div class="slds-size--1-of-1">
+                                    <div class="slds-grid slds-wrap">
+                                        <div class="slds-size--1-of-12 slds-align_absolute-center">
+                                            <lightning-icon
+                                                    class="slds-icon slds-icon--small slds-m-right--small slds-col slds-no-flex slds-align--absolute-center"
+                                                    icon-name="utility:warning"
+                                                    variant="inverse"
+                                                    size="medium"></lightning-icon>
+                                        </div>
+                                        <div class="slds-size--11-of-12 slds-align-middle">
+                                            <p style="font-size:.9rem;font-weight:bold">
+                                                Experience Builder</p>
+                                            <p style="font-size:.9rem;">Due to the dynamic content in cookie consent - we can not display it in the Experience Builder.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+</template>
