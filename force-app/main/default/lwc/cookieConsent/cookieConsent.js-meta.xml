@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>48.0</apiVersion>
     <description>Cookie Consent</description>
@@ -13,18 +13,19 @@
     </targets>
     <targetConfigs>
         <targetConfig targets="lightningCommunity__Default">
-            <property name="displayType" type="String" default="footer" datasource="footer,modal,page" label="Cookie Display Type"/>
-            <property name="headingLabel" type="String" default="" label="Heading Label"/>
-            <property name="instructions" type="String" default="" label="User Instructions"/>
-            <property name="informationButtonLabel" type="String" default="" label="Information Button Label"/>
-            <property name="informationButtonLink" type="String" default="" label="User Information Button Link"/>
-            <property name="confirmButtonLabel" type="String" default="" label="Confirm Button Label"/>
-            <property name="rejectButtonLabel" type="String" default="" label="Reject Button Label"/>
-            <property name="viewCookiesLabel" type="String" default="" label="View Cookies Link Label"/>
-            <property name="viewCookiesLink" type="String" default="" label="View Cookies Link"/>
-            <property name="cookieFooterBackgroundColor" type="Color" default="" label="Cookie Footer Background Color"/>
-            <property name="cookieFooterTextColor" type="Color" default="" label="Cookie Footer Text Color"/>
-            <property name="cookieFooterLinkColor" type="Color" default="" label="Cookie Footer Link Color"/>
+            <property name="displayType" type="String" default="footer" datasource="footer,modal,page" label="Cookie Display Type" />
+            <property name="useRelaxedCSP" type="Boolean" label="Used Relaxed CSP" description="If selected, your component can only be used in a community that has Locker Service turned off" />
+            <property name="headingLabel" type="String" default="" label="Heading Label" />
+            <property name="instructions" type="String" default="" label="User Instructions" />
+            <property name="informationButtonLabel" type="String" default="" label="Information Button Label" />
+            <property name="informationButtonLink" type="String" default="" label="User Information Button Link" />
+            <property name="confirmButtonLabel" type="String" default="" label="Confirm Button Label" />
+            <property name="rejectButtonLabel" type="String" default="" label="Reject Button Label" />
+            <property name="viewCookiesLabel" type="String" default="" label="View Cookies Link Label" />
+            <property name="viewCookiesLink" type="String" default="" label="View Cookies Link" />
+            <property name="cookieFooterBackgroundColor" type="Color" default="" label="Cookie Footer Background Color" />
+            <property name="cookieFooterTextColor" type="Color" default="" label="Cookie Footer Text Color" />
+            <property name="cookieFooterLinkColor" type="Color" default="" label="Cookie Footer Link Color" />
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

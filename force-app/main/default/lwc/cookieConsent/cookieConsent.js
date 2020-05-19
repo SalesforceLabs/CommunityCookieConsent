@@ -1,7 +1,3 @@
-/**
- * Created by stephan.garcia on 2020-03-10.
- */
-
 import { LightningElement, track, api } from "lwc";
 import getCookieData from "@salesforce/apex/CookieConsentService.getCookieData";
 import createCookieConsentRecords from "@salesforce/apex/CookieConsentService.createCookieConsentRecords";
@@ -9,15 +5,19 @@ import verifyBrowserId from "@salesforce/apex/CookieConsentService.verifyBrowser
 import getCookiesToDrop from "@salesforce/apex/CookieConsentService.getCookiesToDrop";
 
 export default class CookieConsent extends LightningElement {
+  // State
+  @api displayType = "footer";
+  @api useRelaxedCSP;
   showCookieDialog;
+  preview;
+  loading = true;
+
+  // Data
+  cookiePreferences = [];
   @track cookieData;
   browserId;
-  cookiePreferences = [];
-  loading = true;
-  browserIdChecked = 0;
-  preview;
 
-  @api displayType = "footer";
+  // Design
   @api headingLabel = "Manage Cookies";
   @api instructions = "Cookie Instructions";
   @api informationButtonLabel = "View Privacy Policy";
@@ -26,14 +26,37 @@ export default class CookieConsent extends LightningElement {
   @api viewCookiesLink = "https://www.salesforce.com";
   @api confirmButtonLabel = "Confirm Preferences";
   @api rejectButtonLabel = "Leave Site";
-
   @api cookieFooterBackgroundColor = "rgb(0,0,0)";
   @api cookieFooterLinkColor = "rgb(250, 250, 250)";
   @api cookieFooterTextColor = "rgb(250, 250, 250)";
 
+  error;
+
   connectedCallback() {
-    let preview = this.checkIfInPreview();
-    this.getBrowserIdCookie(preview);
+    this.checkIfInPreview();
+    if (this.useRelaxedCSP && !this.preview) {
+      this.getBrowserIdCookie();
+    } else if (!this.useRelaxedCSP && !this.preview) {
+      this.receiveCookies = this.receiveCookies.bind(this);
+      window.addEventListener("cookiesFromHead", this.receiveCookies, false);
+      this.getCookiesFromHead();
+    }
+  }
+
+  getCookiesFromHead() {
+    let event = new CustomEvent("componentReady");
+    window.dispatchEvent(event);
+  }
+
+  receiveCookies(e) {
+    let cookieName = "BrowserId";
+    let cookieValue = e.match("(^|;) ?" + cookieName + "=([^;]*)(;|$)");
+    this.browserId = cookieValue ? cookieValue[2] : null;
+    if (this.browserId) {
+      this.verifyBrowserId();
+    } else {
+      this.getCookiesFromHead();
+    }
   }
 
   checkIfInPreview() {
@@ -42,33 +65,27 @@ export default class CookieConsent extends LightningElement {
       urlToCheck = window.location.hostname;
     }
     urlToCheck = urlToCheck.toLowerCase();
-    return urlToCheck.indexOf("sitepreview") >= 0 || urlToCheck.indexOf("livepreview") >= 0;
+    this.preview = urlToCheck.indexOf("sitepreview") >= 0 || urlToCheck.indexOf("livepreview") >= 0;
   }
 
-  getBrowserIdCookie(preview) {
-    this.browserIdChecked++;
+  getBrowserIdCookie() {
     let cookieName = "BrowserId";
     let cookieValue = document.cookie.match("(^|;) ?" + cookieName + "=([^;]*)(;|$)");
     this.browserId = cookieValue ? cookieValue[2] : null;
-
     if (this.browserId) {
       this.verifyBrowserId();
-    } else if (preview === false) {
+    } else {
       this.getBrowserIdSecCookie();
-    } else if (preview === true) {
-      this.preview = true;
     }
   }
 
-  getBrowserIdSecCookie(preview) {
-    this.browserIdChecked++;
+  getBrowserIdSecCookie() {
     let cookieName = "BrowserId_sec";
     let cookieValue = document.cookie.match("(^|;) ?" + cookieName + "=([^;]*)(;|$)");
     this.browserId = cookieValue ? cookieValue[2] : null;
-
     if (this.browserId) {
       this.verifyBrowserId();
-    } else if (preview === false) {
+    } else {
       this.getBrowserIdCookie();
     }
   }
@@ -89,7 +106,9 @@ export default class CookieConsent extends LightningElement {
       .then(data => {
         this.dropCookies(data);
       })
-      .catch(error => {});
+      .catch(error => {
+        this.error = error.message;
+      });
   }
 
   dropCookies(cookies) {
@@ -120,7 +139,9 @@ export default class CookieConsent extends LightningElement {
 
         this.showCookieDialog = !data;
       })
-      .catch(error => {});
+      .catch(error => {
+        this.error = error.message;
+      });
   }
 
   acceptCookies() {
@@ -128,7 +149,9 @@ export default class CookieConsent extends LightningElement {
       .then(data => {
         this.showCookieDialog = false;
       })
-      .catch(error => {});
+      .catch(error => {
+        this.error = error.message;
+      });
   }
 
   rejectCookies() {
@@ -139,7 +162,6 @@ export default class CookieConsent extends LightningElement {
     if (this.showCookieDialog === true) {
       return true;
     }
-
     return false;
   }
 
@@ -157,51 +179,43 @@ export default class CookieConsent extends LightningElement {
 
   dedupeCookiePreferences(cookiePreferences) {
     let obj = {};
-
     for (let i = 0, len = cookiePreferences.length; i < len; i++) {
       obj[cookiePreferences[i]["authorizationFormId"]] = cookiePreferences[i];
     }
-
     cookiePreferences = new Array();
-
     for (let key in obj) {
       cookiePreferences.push(obj[key]);
     }
-
     this.cookiePreferences = cookiePreferences;
   }
 
   showSection(event) {
     let arrayCopy = JSON.parse(JSON.stringify(this.cookieData));
-
     let sectionName = event.currentTarget.dataset.value;
-
     for (let key in arrayCopy) {
       if (arrayCopy[key].SectionName === sectionName) {
         try {
           arrayCopy[key].ShowSection = !arrayCopy[key].ShowSection;
-
           if (arrayCopy[key].ShowSection === true) {
             arrayCopy[key].SectionIcon = "utility:chevrondown";
           } else {
             arrayCopy[key].SectionIcon = "utility:chevronright";
           }
-        } catch (error) {}
+        } catch (error) {
+          this.error = error.message;
+        }
       }
     }
-
     this.cookieData = arrayCopy;
   }
 
   informationButtonSelected() {
     let url = this.informationButtonLink;
-
     window.open(url, "_blank");
   }
 
   cookiesButtonSelected() {
     let url = this.viewCookiesLink;
-
     window.open(url);
   }
 
@@ -224,8 +238,6 @@ export default class CookieConsent extends LightningElement {
   get footerState() {
     if (this.displayType === "footer" && this.showCookieDialog === true) {
       return true;
-    } else {
-      return false;
     }
   }
 
