@@ -30,13 +30,13 @@ public with sharing class CookieConsentService {
   }
 
   /**
-   * @description - Get cookies from the user if they've been dropped by the person accessing the community.
+   * @description - Get cookies from the user if they've been rejected by the person accessing the community.
    * @param browserId - the unique browser Id passed from the community
    * @return List<String> of Cookies
    */
 
   @AuraEnabled
-  public static List<String> getCookiesToDrop(String browserId) {
+  public static List<String> getCookiesToDelete(String browserId) {
     Set<Id> categoryIds = new Set<Id>();
     for (cookiecon__CookieConsent__c consent : [
       SELECT cookiecon__CookieConsentCategory__c

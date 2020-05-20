@@ -9,3 +9,13 @@ window.addEventListener("componentConnected", function(e) {
   let event = new CustomEvent("documentCookies", { detail: cookies });
   window.dispatchEvent(event);
 });
+
+window.addEventListener("deleteCookies", function(e) {
+  let cookies = e.detail;
+  for (let i = 0, len = cookies.length; i < len; i++) {
+    let cookieWithStandardPath = cookies[i] + "=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;";
+    let cookieWithCommunityPath = cookies[i] + "=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/s;";
+    document.cookie = cookieWithStandardPath;
+    document.cookie = cookieWithCommunityPath;
+  }
+});

@@ -2,7 +2,7 @@ import { LightningElement, track, api } from "lwc";
 import getCookieData from "@salesforce/apex/CookieConsentService.getCookieData";
 import createCookieConsentRecords from "@salesforce/apex/CookieConsentService.createCookieConsentRecords";
 import verifyBrowserId from "@salesforce/apex/CookieConsentService.verifyBrowserId";
-import getCookiesToDrop from "@salesforce/apex/CookieConsentService.getCookiesToDrop";
+import getCookiesToDelete from "@salesforce/apex/CookieConsentService.getCookiesToDelete";
 
 export default class CookieConsent extends LightningElement {
   // State
@@ -38,23 +38,7 @@ export default class CookieConsent extends LightningElement {
       this.getBrowserIdCookie();
     } else if (!this.useRelaxedCSP && !this.preview) {
       this.receiveCookies = this.receiveCookies.bind(this);
-      window.addEventListener("cookiesFromHead", this.receiveCookies, false);
-      this.getCookiesFromHead();
-    }
-  }
-
-  getCookiesFromHead() {
-    let event = new CustomEvent("componentReady");
-    window.dispatchEvent(event);
-  }
-
-  receiveCookies(e) {
-    let cookieName = "BrowserId";
-    let cookieValue = e.match("(^|;) ?" + cookieName + "=([^;]*)(;|$)");
-    this.browserId = cookieValue ? cookieValue[2] : null;
-    if (this.browserId) {
-      this.verifyBrowserId();
-    } else {
+      window.addEventListener("documentCookies", this.receiveCookiesFromHead, false);
       this.getCookiesFromHead();
     }
   }
@@ -66,6 +50,22 @@ export default class CookieConsent extends LightningElement {
     }
     urlToCheck = urlToCheck.toLowerCase();
     this.preview = urlToCheck.indexOf("sitepreview") >= 0 || urlToCheck.indexOf("livepreview") >= 0;
+  }
+
+  getCookiesFromHead() {
+    let event = new CustomEvent("componentReady");
+    window.dispatchEvent(event);
+  }
+
+  receiveCookiesFromHead(e) {
+    let cookieName = "BrowserId";
+    let cookieValue = e.match("(^|;) ?" + cookieName + "=([^;]*)(;|$)");
+    this.browserId = cookieValue ? cookieValue[2] : null;
+    if (this.browserId) {
+      this.verifyBrowserId();
+    } else {
+      this.getCookiesFromHead();
+    }
   }
 
   getBrowserIdCookie() {
@@ -90,6 +90,24 @@ export default class CookieConsent extends LightningElement {
     }
   }
 
+  verifyBrowserId() {
+    verifyBrowserId({ browserId: this.browserId })
+      .then(data => {
+        if (data === false) {
+          this.getCookieSectionsAndData();
+        } else if (this.displayType === "page") {
+          this.getCookieSectionsAndData();
+        } else if (data === true) {
+          this.getCookiesAndDeleteThem();
+        }
+
+        this.showCookieDialog = !data;
+      })
+      .catch(error => {
+        this.error = error.message;
+      });
+  }
+
   getCookieSectionsAndData() {
     getCookieData()
       .then(data => {
@@ -101,47 +119,38 @@ export default class CookieConsent extends LightningElement {
       .catch(error => {});
   }
 
-  getCookiesAndDropThem() {
-    getCookiesToDrop({ browserId: this.browserId })
-      .then(data => {
-        this.dropCookies(data);
-      })
-      .catch(error => {
-        this.error = error.message;
-      });
-  }
-
-  dropCookies(cookies) {
-    for (let i = 0, len = cookies.length; i < len; i++) {
-      let cookieString = cookies[i] + "=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;";
-      let cookieStrings = cookies[i] + "=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/s;";
-      document.cookie = cookieString;
-      document.cookie = cookieStrings;
-    }
-  }
-
   setStartingCookiePreferences(cookieData) {
     for (let i = 0, len = cookieData.length; i < len; i++) {
       this.cookiePreferences.push({ authorizationFormId: cookieData[i].RelatedAuthorizationFormId, value: cookieData[i].DefaultValue });
     }
   }
 
-  verifyBrowserId() {
-    verifyBrowserId({ browserId: this.browserId })
+  getCookiesAndDeleteThem() {
+    getCookiesToDelete({ browserId: this.browserId })
       .then(data => {
-        if (data === false) {
-          this.getCookieSectionsAndData();
-        } else if (this.displayType === "page") {
-          this.getCookieSectionsAndData();
-        } else if (data === true) {
-          this.getCookiesAndDropThem();
+        if (this.useRelaxedCSP) {
+          this.deleteCookiesOutsideLocker(data);
+        } else {
+          this.deleteCookiesInsideLocker(data);
         }
-
-        this.showCookieDialog = !data;
       })
       .catch(error => {
         this.error = error.message;
       });
+  }
+
+  deleteCookiesOutsideLocker(cookies) {
+    for (let i = 0, len = cookies.length; i < len; i++) {
+      let cookieWithStandardPath = cookies[i] + "=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;";
+      let cookieWithCommunityPath = cookies[i] + "=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/s;";
+      document.cookie = cookieWithStandardPath;
+      document.cookie = cookieWithCommunityPath;
+    }
+  }
+
+  deleteCookiesInsideLocker(cookies) {
+    let event = new CustomEvent("deleteCookies", { detail: cookies });
+    window.dispatchEvent(event);
   }
 
   acceptCookies() {
@@ -168,11 +177,8 @@ export default class CookieConsent extends LightningElement {
   updateSectionStatus(event) {
     let authorizationFormId = event.target.name;
     let value = event.target.checked;
-
     let updatedPreference = { authorizationFormId: authorizationFormId, value: value };
-
     const newArray = [].concat(this.cookiePreferences, updatedPreference);
-
     this.cookiePreferences = newArray;
     this.dedupeCookiePreferences(this.cookiePreferences);
   }
@@ -236,9 +242,7 @@ export default class CookieConsent extends LightningElement {
   }
 
   get footerState() {
-    if (this.displayType === "footer" && this.showCookieDialog === true) {
-      return true;
-    }
+    return this.displayType === "footer" && this.showCookieDialog === true;
   }
 
   get modalState() {

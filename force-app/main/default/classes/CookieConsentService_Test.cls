@@ -3,183 +3,145 @@
  */
 @isTest
 public with sharing class CookieConsentService_Test {
+  @testSetup
+  static void createTestData() {
+    cookiecon__CookieConsentCategory__c cookieConsentCategory = CookieConsentTestUtilities.createCookieConsentCategory();
+    cookiecon__Cookie__c cookie = CookieConsentTestUtilities.createCookie(cookieConsentCategory.Id);
+    CookieConsentTestUtilities.createUser();
+    CookieConsentTestUtilities.createStandardUser();
+  }
 
-    @testSetup
-    static void createTestData(){
+  @isTest
+  static void testVerifyBrowserId_guestUser() {
+    List<User> users = [SELECT Id FROM User WHERE Username = 'test@cookieconsent.com' LIMIT 1];
+    User guestUser = (users.size() == 1) ? users.get(0) : null;
 
-        cookiecon__CookieConsentCategory__c cookieConsentCategory = CookieConsentTestUtilities.createCookieConsentCategory();
-        cookiecon__Cookie__c cookie = CookieConsentTestUtilities.createCookie(cookieConsentCategory.Id);
-        CookieConsentTestUtilities.createUser();
-        CookieConsentTestUtilities.createStandardUser();
+    Test.startTest();
 
+    Boolean result = null;
+    System.runAs(guestUser) {
+      result = CookieConsentService.verifyBrowserId('123456789');
     }
 
+    Test.stopTest();
 
-    @isTest
-    static void testVerifyBrowserId_guestUser(){
+    System.assert(!result);
+  }
 
-        List<User> users = [SELECT Id FROM User WHERE Username = 'test@cookieconsent.com' LIMIT 1];
-        User guestUser = (users.size() == 1) ? users.get(0) : null;
+  @isTest
+  static void testVerifyBrowserId_standardUser() {
+    List<User> users = [SELECT Id FROM User WHERE Username = 'standard@cookieconsent.com' LIMIT 1];
+    User standardUser = (users.size() == 1) ? users.get(0) : null;
 
-        Test.startTest();
+    Test.startTest();
 
-        Boolean result = null;
-        System.runAs(guestUser){
-
-            result = CookieConsentService.verifyBrowserId('123456789');
-
-        }
-
-        Test.stopTest();
-
-        System.assert(!result);
-
-
+    Boolean result = null;
+    System.runAs(standardUser) {
+      result = CookieConsentService.verifyBrowserId('123456789');
     }
 
-    @isTest
-    static void testVerifyBrowserId_standardUser(){
+    Test.stopTest();
 
-        List<User> users = [SELECT Id FROM User WHERE Username = 'standard@cookieconsent.com' LIMIT 1];
-        User standardUser = (users.size() == 1) ? users.get(0) : null;
+    System.assert(!result);
+  }
 
-        Test.startTest();
+  @isTest
+  static void testGetCookieData() {
+    List<User> users = [SELECT Id FROM User WHERE Username = 'standard@cookieconsent.com' LIMIT 1];
+    User standardUser = (users.size() == 1) ? users.get(0) : null;
 
-        Boolean result = null;
-        System.runAs(standardUser){
+    Test.startTest();
 
-            result = CookieConsentService.verifyBrowserId('123456789');
-
-        }
-
-        Test.stopTest();
-
-        System.assert(!result);
-
-
+    List<Map<String, Object>> result = new List<Map<String, Object>>();
+    System.runAs(standardUser) {
+      result = CookieConsentService.getCookieData();
     }
 
-    @isTest
-    static void testGetCookieData(){
+    Test.stopTest();
 
-        List<User> users = [SELECT Id FROM User WHERE Username = 'standard@cookieconsent.com' LIMIT 1];
-        User standardUser = (users.size() == 1) ? users.get(0) : null;
+    System.assert(result.size() == 1);
+  }
 
-        Test.startTest();
+  @isTest
+  static void testVerifyBrowserId_guestUserWithIndividual() {
+    Individual individual = CookieConsentTestUtilities.createIndividual();
 
-        List<Map<String, Object>> result = new List<Map<String, Object>>();
-        System.runAs(standardUser){
+    List<User> users = [SELECT Id FROM User WHERE Username = 'test@cookieconsent.com' LIMIT 1];
+    User guestUser = (users.size() == 1) ? users.get(0) : null;
 
-            result = CookieConsentService.getCookieData();
+    Test.startTest();
 
-        }
-
-        Test.stopTest();
-
-        System.assert(result.size() == 1);
-
-
+    Boolean result = null;
+    System.runAs(guestUser) {
+      result = CookieConsentService.verifyBrowserId('123456789');
     }
 
-    @isTest
-    static void testVerifyBrowserId_guestUserWithIndividual(){
+    Test.stopTest();
 
-        Individual individual = CookieConsentTestUtilities.createIndividual();
+    System.assert(!result);
+  }
 
-        List<User> users = [SELECT Id FROM User WHERE Username = 'test@cookieconsent.com' LIMIT 1];
-        User guestUser = (users.size() == 1) ? users.get(0) : null;
+  @isTest
+  static void testVerifyBrowserId_guestUserWithIndividualAndPreferences() {
+    List<cookiecon__CookieConsentCategory__c> cookieConsentCategories = [SELECT Id FROM cookiecon__CookieConsentCategory__c LIMIT 1];
+    cookiecon__CookieConsentCategory__c cookieConsentCategory = (cookieConsentCategories.size() == 1) ? cookieConsentCategories.get(0) : null;
+    Individual individual = CookieConsentTestUtilities.createIndividual();
 
-        Test.startTest();
+    Test.startTest();
 
-        Boolean result = null;
-        System.runAs(guestUser){
+    List<User> users = [SELECT Id FROM User WHERE Username = 'test@cookieconsent.com' LIMIT 1];
+    User guestUser = (users.size() == 1) ? users.get(0) : null;
 
-            result = CookieConsentService.verifyBrowserId('123456789');
+    List<Map<String, String>> cookiePreferences = new List<Map<String, String>>();
 
-        }
+    Map<String, String> preferenceRow = new Map<String, String>();
 
-        Test.stopTest();
+    preferenceRow.put('authorizationFormId', cookieConsentCategory.Id);
+    preferenceRow.put('value', 'true');
 
-        System.assert(!result);
+    cookiePreferences.add(preferenceRow);
 
+    Boolean createRecords = CookieConsentService.createCookieConsentRecords('123456789', cookiePreferences);
 
+    Boolean result = null;
+    System.runAs(guestUser) {
+      result = CookieConsentService.verifyBrowserId('123456789');
     }
 
-    @isTest
-    static void testVerifyBrowserId_guestUserWithIndividualAndPreferences(){
+    Test.stopTest();
 
-        List<cookiecon__CookieConsentCategory__c> cookieConsentCategories = [SELECT Id FROM cookiecon__CookieConsentCategory__c LIMIT 1];
-        cookiecon__CookieConsentCategory__c cookieConsentCategory = (cookieConsentCategories.size() == 1) ? cookieConsentCategories.get(0) : null;
-        Individual individual = CookieConsentTestUtilities.createIndividual();
+    System.assert(!result);
+  }
 
-        Test.startTest();
+  @isTest
+  static void testGetCookiesToDelete_guestUserWithIndividualAndPreferences() {
+    List<cookiecon__CookieConsentCategory__c> cookieConsentCategories = [SELECT Id FROM cookiecon__CookieConsentCategory__c LIMIT 1];
+    cookiecon__CookieConsentCategory__c cookieConsentCategory = (cookieConsentCategories.size() == 1) ? cookieConsentCategories.get(0) : null;
+    Individual individual = CookieConsentTestUtilities.createIndividual();
 
-        List<User> users = [SELECT Id FROM User WHERE Username = 'test@cookieconsent.com' LIMIT 1];
-        User guestUser = (users.size() == 1) ? users.get(0) : null;
+    Test.startTest();
 
-        List<Map<String,String>> cookiePreferences = new List<Map<String,String>>();
+    List<User> users = [SELECT Id FROM User WHERE Username = 'test@cookieconsent.com' LIMIT 1];
+    User guestUser = (users.size() == 1) ? users.get(0) : null;
 
-        Map<String,String> preferenceRow = new Map<String,String>();
+    List<Map<String, String>> cookiePreferences = new List<Map<String, String>>();
 
-        preferenceRow.put('authorizationFormId', cookieConsentCategory.Id);
-        preferenceRow.put('value', 'true');
+    Map<String, String> preferenceRow = new Map<String, String>();
 
-        cookiePreferences.add(preferenceRow);
+    preferenceRow.put('authorizationFormId', cookieConsentCategory.Id);
+    preferenceRow.put('value', 'true');
 
-        Boolean createRecords = CookieConsentService.createCookieConsentRecords('123456789', cookiePreferences);
+    cookiePreferences.add(preferenceRow);
 
-        Boolean result = null;
-        System.runAs(guestUser){
+    Boolean createRecords = CookieConsentService.createCookieConsentRecords('123456789', cookiePreferences);
 
-            result = CookieConsentService.verifyBrowserId('123456789');
-
-        }
-
-        Test.stopTest();
-
-        System.assert(!result);
-
-
+    List<String> cookiesToDelete = new List<String>();
+    System.runAs(guestUser) {
+      cookiesToDelete = CookieConsentService.getCookiesToDelete('123456789');
     }
 
-    @isTest
-    static void testGetCookiesToDrop_guestUserWithIndividualAndPreferences(){
+    Test.stopTest();
 
-        List<cookiecon__CookieConsentCategory__c> cookieConsentCategories = [SELECT Id FROM cookiecon__CookieConsentCategory__c LIMIT 1];
-        cookiecon__CookieConsentCategory__c cookieConsentCategory = (cookieConsentCategories.size() == 1) ? cookieConsentCategories.get(0) : null;
-        Individual individual = CookieConsentTestUtilities.createIndividual();
-
-        Test.startTest();
-
-        List<User> users = [SELECT Id FROM User WHERE Username = 'test@cookieconsent.com' LIMIT 1];
-        User guestUser = (users.size() == 1) ? users.get(0) : null;
-
-        List<Map<String,String>> cookiePreferences = new List<Map<String,String>>();
-
-        Map<String,String> preferenceRow = new Map<String,String>();
-
-        preferenceRow.put('authorizationFormId', cookieConsentCategory.Id);
-        preferenceRow.put('value', 'true');
-
-        cookiePreferences.add(preferenceRow);
-
-        Boolean createRecords = CookieConsentService.createCookieConsentRecords('123456789', cookiePreferences);
-
-        List<String> cookiesToDrop = new List<String>();
-        System.runAs(guestUser){
-
-            cookiesToDrop = CookieConsentService.getCookiesToDrop('123456789');
-
-        }
-
-        Test.stopTest();
-
-        System.assert(cookiesToDrop.size() == 0);
-
-
-    }
-
-
-
-
+    System.assert(cookiesToDelete.size() == 0);
+  }
 }
