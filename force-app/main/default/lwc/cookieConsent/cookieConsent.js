@@ -7,7 +7,7 @@ import getCookiesToDelete from "@salesforce/apex/CookieConsentService.getCookies
 export default class CookieConsent extends LightningElement {
   // State
   @api displayType = "footer";
-  @api useRelaxedCSP;
+  @api useRelaxedCSP = false;
   showCookieDialog;
   preview;
   loading = true;
@@ -37,8 +37,12 @@ export default class CookieConsent extends LightningElement {
     if (this.useRelaxedCSP && !this.preview) {
       this.getBrowserIdCookie();
     } else if (!this.useRelaxedCSP && !this.preview) {
-      this.receiveCookies = this.receiveCookies.bind(this);
-      window.addEventListener("documentCookies", this.receiveCookiesFromHead, false);
+      try {
+        this.receiveCookiesFromHead = this.receiveCookiesFromHead.bind(this);
+        window.addEventListener("documentCookies", this.receiveCookiesFromHead, false);
+      } catch (e) {
+        console.log("error: " + e);
+      }
       this.getCookiesFromHead();
     }
   }
@@ -53,13 +57,14 @@ export default class CookieConsent extends LightningElement {
   }
 
   getCookiesFromHead() {
-    let event = new CustomEvent("componentReady");
+    let event = new CustomEvent("componentConnected");
     window.dispatchEvent(event);
   }
 
   receiveCookiesFromHead(e) {
+    let response = e.detail;
     let cookieName = "BrowserId";
-    let cookieValue = e.match("(^|;) ?" + cookieName + "=([^;]*)(;|$)");
+    let cookieValue = response.match("(^|;) ?" + cookieName + "=([^;]*)(;|$)");
     this.browserId = cookieValue ? cookieValue[2] : null;
     if (this.browserId) {
       this.verifyBrowserId();
