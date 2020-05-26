@@ -1,0 +1,36 @@
+{
+  "records": [
+    {
+      "attributes": {
+        "type": "cookiecon__CookieConsentCategory__c",
+        "referenceId": "cookiecon__CookieConsentCategory__cRef1"
+      },
+      "Name": "Advertising Cookies",
+      "cookiecon__DefaultValue__c": true,
+      "cookiecon__Description__c": "Advertising cookies track activity across websites in order to understand a viewer’s interests and direct them specific marketing. Some examples include cookies used for remarketing or interest-based advertising.",
+      "cookiecon__Manditory__c": false
+    },
+    {
+      "attributes": {
+        "type": "cookiecon__CookieConsentCategory__c",
+        "referenceId": "cookiecon__CookieConsentCategory__cRef2"
+      },
+      "Name": "Functional Cookies",
+      "cookiecon__AdditionalInformation__c": "Our community requires the use of functional cookies.",
+      "cookiecon__DefaultValue__c": true,
+      "cookiecon__Description__c": "Functional cookies enhance functions, performance, and services on the website. Some examples include cookies used to analyze site traffic, cookies used for market research, and cookies used to display advertising that is not directed to a particular individual.",
+      "cookiecon__Manditory__c": true
+    },
+    {
+      "attributes": {
+        "type": "cookiecon__CookieConsentCategory__c",
+        "referenceId": "cookiecon__CookieConsentCategory__cRef3"
+      },
+      "Name": "Required Cookies",
+      "cookiecon__AdditionalInformation__c": "Our community requires the use of functional cookies.",
+      "cookiecon__DefaultValue__c": true,
+      "cookiecon__Description__c": "Required cookies are necessary for basic website functionality. Some examples include: session cookies needed to transmit the website, authentication cookies, and security cookies.",
+      "cookiecon__Manditory__c": true
+    }
+  ]
+}
