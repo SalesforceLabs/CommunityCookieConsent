@@ -11,6 +11,19 @@
       "logFile": "${command:AskForLogFileName}",
       "stopOnEntry": true,
       "trace": true
+    },
+    {
+      "name": "Debug Jest Tests",
+      "type": "node",
+      "request": "launch",
+      "env": { "NODE_ENV": "test" },
+      "cwd": "${workspaceRoot}",
+      "program": "${workspaceRoot}/node_modules/.bin/lwc-jest",
+      "stopOnEntry": false,
+      "runtimeArgs": ["--nolazy"],
+      "console": "internalConsole",
+      "sourceMaps": false,
+      "internalConsoleOptions": "openOnSessionStart"
     }
   ]
 }

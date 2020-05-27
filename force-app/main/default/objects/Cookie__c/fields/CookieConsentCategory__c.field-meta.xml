@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CookieConsentCategory__c</fullName>
+    <deleteConstraint>Restrict</deleteConstraint>
+    <deprecated>false</deprecated>
+    <description>The parent category for the cookie.</description>
+    <externalId>false</externalId>
+    <label>Cookie Consent Category</label>
+    <referenceTo>CookieConsentCategory__c</referenceTo>
+    <relationshipLabel>Cookies</relationshipLabel>
+    <relationshipName>Cookies</relationshipName>
+    <required>true</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

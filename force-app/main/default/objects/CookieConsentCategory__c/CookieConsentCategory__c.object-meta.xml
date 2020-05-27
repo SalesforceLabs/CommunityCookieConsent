@@ -149,100 +149,22 @@
     <enableFeeds>false</enableFeeds>
     <enableHistory>false</enableHistory>
     <enableLicensing>false</enableLicensing>
-    <enableReports>false</enableReports>
+    <enableReports>true</enableReports>
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
-    <fields>
-        <fullName>ConsentCapturedSourceType__c</fullName>
-        <deprecated>false</deprecated>
-        <externalId>false</externalId>
-        <label>Consent Captured Source Type</label>
-        <length>225</length>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>ConsentCapturedSource__c</fullName>
-        <deprecated>false</deprecated>
-        <externalId>false</externalId>
-        <label>Consent Captured Source</label>
-        <length>255</length>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>ConsentGiverId__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <deprecated>false</deprecated>
-        <externalId>false</externalId>
-        <label>Party</label>
-        <referenceTo>Individual</referenceTo>
-        <relationshipLabel>Cookie Consent Records</relationshipLabel>
-        <relationshipName>Cookie_Consent_Records</relationshipName>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>CookieConsentCategory__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <deprecated>false</deprecated>
-        <externalId>false</externalId>
-        <label>Cookie Consent Category</label>
-        <referenceTo>CookieConsentCategory__c</referenceTo>
-        <relationshipLabel>Cookie Consent Records</relationshipLabel>
-        <relationshipName>Cookie_Consent_Records</relationshipName>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>Status__c</fullName>
-        <deprecated>false</deprecated>
-        <externalId>false</externalId>
-        <label>Status</label>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Agreed</fullName>
-                    <default>false</default>
-                    <label>Agreed</label>
-                </value>
-                <value>
-                    <fullName>Declined</fullName>
-                    <default>false</default>
-                    <label>Declined</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
-    <label>Cookie Consent</label>
-    <listViews>
-        <fullName>All</fullName>
-        <filterScope>Everything</filterScope>
-        <label>All</label>
-    </listViews>
+    <label>Cookie Consent Category</label>
     <nameField>
-        <label>Cookie Consent Name</label>
+        <label>Cookie Consent Category Name</label>
         <type>Text</type>
     </nameField>
-    <pluralLabel>Cookie Consent Records</pluralLabel>
+    <pluralLabel>Cookie Consent Categories</pluralLabel>
     <searchLayouts>
-        <searchResultsAdditionalFields>ConsentGiverId__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Status__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>CookieConsentCategory__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>ConsentCapturedSourceType__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Description__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>AdditionalInformation__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>DefaultValue__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Manditory__c</searchResultsAdditionalFields>
     </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>

@@ -33,3 +33,10 @@ Thumbs.db
 ehthumbs.db
 [Dd]esktop.ini
 $RECYCLE.BIN/
+
+# LWC Jest
+**/__tests__/**
+
+# LWC configuration files
+**/jsconfig.json
+**/.eslintrc.json

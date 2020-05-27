@@ -99,6 +99,7 @@ export default class CookieConsent extends LightningElement {
     verifyBrowserId({ browserId: this.browserId })
       .then(data => {
         if (data === false) {
+          console.log(data);
           this.getCookieSectionsAndData();
         } else if (this.displayType === "page") {
           this.getCookieSectionsAndData();
@@ -116,6 +117,7 @@ export default class CookieConsent extends LightningElement {
   getCookieSectionsAndData() {
     getCookieData()
       .then(data => {
+        console.log(JSON.stringify(data));
         this.cookieData = [...data];
 
         this.setStartingCookiePreferences(data);

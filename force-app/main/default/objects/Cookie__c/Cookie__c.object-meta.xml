@@ -149,84 +149,20 @@
     <enableFeeds>false</enableFeeds>
     <enableHistory>false</enableHistory>
     <enableLicensing>false</enableLicensing>
-    <enableReports>true</enableReports>
+    <enableReports>false</enableReports>
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
-    <fields>
-        <fullName>AdditionalInformation__c</fullName>
-        <deprecated>false</deprecated>
-        <externalId>false</externalId>
-        <label>Additional Information</label>
-        <length>32768</length>
-        <trackTrending>false</trackTrending>
-        <type>LongTextArea</type>
-        <visibleLines>3</visibleLines>
-    </fields>
-    <fields>
-        <fullName>DefaultValue__c</fullName>
-        <defaultValue>false</defaultValue>
-        <deprecated>false</deprecated>
-        <description>The default opt-in value for the section.</description>
-        <externalId>false</externalId>
-        <inlineHelpText>The default opt-in value for the section.</inlineHelpText>
-        <label>Default Value</label>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Description__c</fullName>
-        <deprecated>false</deprecated>
-        <description>The category notes that will be displayed to the user viewing the cookie consent modal.</description>
-        <externalId>false</externalId>
-        <label>Description</label>
-        <length>32768</length>
-        <trackTrending>false</trackTrending>
-        <type>LongTextArea</type>
-        <visibleLines>3</visibleLines>
-    </fields>
-    <fields>
-        <fullName>Manditory__c</fullName>
-        <defaultValue>false</defaultValue>
-        <deprecated>false</deprecated>
-        <description>Determines if the cookie consent section is mandatory.</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Mark true if the section is mandatory</inlineHelpText>
-        <label>Mandatory</label>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>RelatedAuthorizationForm__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <deprecated>false</deprecated>
-        <description>The Authorization Form that the User will consent to for each section.</description>
-        <externalId>false</externalId>
-        <label>Related Authorization Form</label>
-        <referenceTo>AuthorizationFormText</referenceTo>
-        <relationshipLabel>Cookie Consent Categories</relationshipLabel>
-        <relationshipName>Cookie_Consent_Categories</relationshipName>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
-    </fields>
-    <label>Cookie Consent Category</label>
-    <listViews>
-        <fullName>All</fullName>
-        <filterScope>Everything</filterScope>
-        <label>All</label>
-    </listViews>
+    <label>Cookie</label>
     <nameField>
-        <label>Cookie Consent Category Name</label>
+        <label>Cookie Name</label>
         <type>Text</type>
     </nameField>
-    <pluralLabel>Cookie Consent Categories</pluralLabel>
+    <pluralLabel>Cookies</pluralLabel>
     <searchLayouts>
         <searchResultsAdditionalFields>Description__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>AdditionalInformation__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>DefaultValue__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Manditory__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CookieConsentCategory__c</searchResultsAdditionalFields>
     </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>

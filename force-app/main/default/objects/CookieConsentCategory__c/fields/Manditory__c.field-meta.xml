@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Manditory__c</fullName>
+    <defaultValue>false</defaultValue>
+    <deprecated>false</deprecated>
+    <description>Determines if the cookie consent section is mandatory.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Mark true if the section is mandatory</inlineHelpText>
+    <label>Mandatory</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>
