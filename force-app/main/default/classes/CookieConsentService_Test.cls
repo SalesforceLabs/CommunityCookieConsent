@@ -1,6 +1,3 @@
-/**
- * Created by stephan.garcia on 2020-04-13.
- */
 @isTest
 public with sharing class CookieConsentService_Test {
   @testSetup
