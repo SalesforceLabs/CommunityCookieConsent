@@ -16,10 +16,10 @@ public with sharing class CookieConsentService {
         User loggedInUser = getLoggedInUserDetails(userId);
         individualId = loggedInUser.IndividualId;
         if (individualId == null) {
-          individualId = createIndividualRecord(userId, browserId);
+          individualId = CookieConsentServiceGuestHelper.createIndividualRecord(userId, browserId);
         }
       } else {
-        individualId = createIndividualRecord(null, browserId);
+        individualId = CookieConsentServiceGuestHelper.createIndividualRecord(null, browserId);
       }
     }
     if (individualId != null) {
@@ -107,20 +107,6 @@ public with sharing class CookieConsentService {
       return true;
     }
     return false;
-  }
-
-  /**
-   * createIndividualRecord is used to create an individual for a logged in user or browserId
-   * @param userId - the userId of the logged in user
-   * @param browserId - the unique browser Id passed from the community
-   */
-  public static Id createIndividualRecord(Id userId, String browserId) {
-    List<Individual> newIndividuals = new List<Individual>();
-    Individual newIndividual = new Individual(LastName = browserId, cookiecon__BrowserId__c = browserId);
-    newIndividuals.add(newIndividual);
-    SObjectAccessDecision sanitisedRecords = Security.stripInaccessible(AccessType.CREATABLE, newIndividuals);
-    insert sanitisedRecords.getRecords();
-    return sanitisedRecords.getRecords()[0].Id;
   }
 
   /**
