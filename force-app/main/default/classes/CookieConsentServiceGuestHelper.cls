@@ -21,7 +21,7 @@ public without sharing class CookieConsentServiceGuestHelper {
         SELECT Id, Name
         FROM cookiecon__CookieConsentCategory__c
         WHERE Id = :cookiePreference.get('authorizationFormId')
-        WITH SECURITY_ENFORCED
+        //WITH SECURITY_ENFORCED
         LIMIT 1
       ];
       cookiecon__CookieConsentCategory__c cookieConsentCategory = (cookieConsentCategories.size() == 1) ? cookieConsentCategories.get(0) : null;
@@ -60,7 +60,7 @@ public without sharing class CookieConsentServiceGuestHelper {
       SELECT Id
       FROM cookiecon__CookieConsent__c
       WHERE cookiecon__CookieConsentCategory__c IN :authFormIds AND cookiecon__ConsentGiverId__c = :individualId
-      WITH SECURITY_ENFORCED
+      //WITH SECURITY_ENFORCED
     ];
     if (authorizationFormConsents.size() >= cookieConsentCategories.size()) {
       return true;
@@ -77,8 +77,12 @@ public without sharing class CookieConsentServiceGuestHelper {
     List<Individual> newIndividuals = new List<Individual>();
     Individual newIndividual = new Individual(LastName = browserId, cookiecon__BrowserId__c = browserId);
     newIndividuals.add(newIndividual);
+    /*
     SObjectAccessDecision sanitisedRecords = Security.stripInaccessible(AccessType.CREATABLE, newIndividuals);
     insert sanitisedRecords.getRecords();
     return sanitisedRecords.getRecords()[0].Id;
+    */
+    insert newIndividual;
+    return newIndividual.Id;
   }
 }
