@@ -110,7 +110,7 @@ public with sharing class CookieConsentService_Test {
 
     Test.stopTest();
 
-    System.assert(!result);
+    System.assert(result, 'consent records were not found');
   }
 
   @isTest

@@ -15,7 +15,7 @@ export default class CookieConsent extends LightningElement {
   // Data
   cookiePreferences = [];
   @track cookieData;
-  browserId;
+  uniqueId;
 
   // Design
   @api headingLabel = "Manage Cookies";
@@ -26,10 +26,13 @@ export default class CookieConsent extends LightningElement {
   @api viewCookiesLink = "https://www.salesforce.com";
   @api confirmButtonLabel = "Confirm Preferences";
   @api rejectButtonLabel = "Leave Site";
+  @api cookieFooterRelative = false;
+  @api cookieFooterPadding = "small";
+  @api cookieFooterButtonAlignment = "center";
   @api cookieFooterBackgroundColor = "rgb(0,0,0)";
   @api cookieFooterLinkColor = "rgb(250, 250, 250)";
   @api cookieFooterTextColor = "rgb(250, 250, 250)";
-
+  @api previewInBuilder = false;
   error;
 
   connectedCallback() {
@@ -44,6 +47,9 @@ export default class CookieConsent extends LightningElement {
         console.log("error: " + e);
       }
       this.getCookiesFromHead();
+    } else if (this.previewInBuilder) {
+      this.uniqueId = Math.random();
+      this.verifyBrowserId();
     }
   }
 
@@ -63,10 +69,15 @@ export default class CookieConsent extends LightningElement {
 
   receiveCookiesFromHead(e) {
     let response = e.detail;
-    let cookieName = "BrowserId";
-    let cookieValue = response.match("(^|;) ?" + cookieName + "=([^;]*)(;|$)");
-    this.browserId = cookieValue ? cookieValue[2] : null;
-    if (this.browserId) {
+    let browserIdCookieName = "BrowserId";
+    let browserIdCookieValue = response.match("(^|;) ?" + browserIdCookieName + "=([^;]*)(;|$)");
+    this.uniqueId = browserIdCookieValue ? browserIdCookieValue[2] : null;
+    if (this.uniqueId === null) {
+      let gaCookieName = "_ga";
+      let gaCookieValue = response.match("(^|;) ?" + gaCookieName + "=([^;]*)(;|$)");
+      this.uniqueId = gaCookieValue ? gaCookieValue[2] : null;
+    }
+    if (this.uniqueId) {
       this.verifyBrowserId();
     } else {
       this.getCookiesFromHead();
@@ -76,8 +87,8 @@ export default class CookieConsent extends LightningElement {
   getBrowserIdCookie() {
     let cookieName = "BrowserId";
     let cookieValue = document.cookie.match("(^|;) ?" + cookieName + "=([^;]*)(;|$)");
-    this.browserId = cookieValue ? cookieValue[2] : null;
-    if (this.browserId) {
+    this.uniqueId = cookieValue ? cookieValue[2] : null;
+    if (this.uniqueId) {
       this.verifyBrowserId();
     } else {
       this.getBrowserIdSecCookie();
@@ -87,8 +98,19 @@ export default class CookieConsent extends LightningElement {
   getBrowserIdSecCookie() {
     let cookieName = "BrowserId_sec";
     let cookieValue = document.cookie.match("(^|;) ?" + cookieName + "=([^;]*)(;|$)");
-    this.browserId = cookieValue ? cookieValue[2] : null;
-    if (this.browserId) {
+    this.uniqueId = cookieValue ? cookieValue[2] : null;
+    if (this.uniqueId) {
+      this.verifyBrowserId();
+    } else {
+      this.getGaCookie();
+    }
+  }
+
+  getGaCookie() {
+    let cookieName = "_ga";
+    let cookieValue = document.cookie.match("(^|;) ?" + cookieName + "=([^;]*)(;|$)");
+    this.uniqueId = cookieValue ? cookieValue[2] : null;
+    if (this.uniqueId) {
       this.verifyBrowserId();
     } else {
       this.getBrowserIdCookie();
@@ -96,17 +118,15 @@ export default class CookieConsent extends LightningElement {
   }
 
   verifyBrowserId() {
-    verifyBrowserId({ browserId: this.browserId })
+    verifyBrowserId({ browserId: this.uniqueId })
       .then(data => {
         if (data === false) {
-          console.log(data);
           this.getCookieSectionsAndData();
         } else if (this.displayType === "page") {
           this.getCookieSectionsAndData();
         } else if (data === true) {
           this.getCookiesAndDeleteThem();
         }
-
         this.showCookieDialog = !data;
       })
       .catch(error => {
@@ -117,7 +137,6 @@ export default class CookieConsent extends LightningElement {
   getCookieSectionsAndData() {
     getCookieData()
       .then(data => {
-        console.log(JSON.stringify(data));
         this.cookieData = [...data];
 
         this.setStartingCookiePreferences(data);
@@ -133,7 +152,7 @@ export default class CookieConsent extends LightningElement {
   }
 
   getCookiesAndDeleteThem() {
-    getCookiesToDelete({ browserId: this.browserId })
+    getCookiesToDelete({ browserId: this.uniqueId })
       .then(data => {
         if (this.useRelaxedCSP) {
           this.deleteCookiesOutsideLocker(data);
@@ -161,7 +180,7 @@ export default class CookieConsent extends LightningElement {
   }
 
   acceptCookies() {
-    createCookieConsentRecords({ browserId: this.browserId, cookiePreferences: this.cookiePreferences })
+    createCookieConsentRecords({ browserId: this.uniqueId, cookiePreferences: this.cookiePreferences })
       .then(data => {
         this.showCookieDialog = false;
       })
@@ -258,5 +277,30 @@ export default class CookieConsent extends LightningElement {
 
   get pageState() {
     return this.displayType === "page";
+  }
+
+  get footerButtonClass() {
+    switch (this.cookieFooterButtonAlignment) {
+      case "left":
+        return "slds-grid slds-wrap";
+      case "center":
+        return "slds-grid slds-wrap slds-grid--align-center";
+      case "right":
+        return "slds-grid slds-wrap slds-grid--align-end";
+      default:
+        return "slds-grid slds-wrap";
+    }
+  }
+
+  get footerContainerPadding() {
+    return "slds-size--1-of-1 slds-p-around_" + this.cookieFooterPadding;
+  }
+
+  get footerContainerClass() {
+    if (this.cookieFooterRelative === false) {
+      return "cookiecon-footer-container-fixed";
+    } else {
+      return "cookiecon-footer-container-relative";
+    }
   }
 }

@@ -1,0 +1,70 @@
+public without sharing class CookieConsentServiceGuestHelper {
+  /**
+   * getIndividualByUserID will get the logged in userId and check to see if an individual has been created
+   * @param browserId - the unique browser Id passed from the community
+   */
+  public static Individual getIndividualByBrowserId(String browserId) {
+    List<Individual> individuals = [SELECT Id, cookiecon__BrowserId__c FROM Individual WHERE cookiecon__BrowserId__c = :browserId LIMIT 1];
+    Individual individual = (individuals.size() == 1) ? individuals.get(0) : null;
+    return individual;
+  }
+
+  /**
+   * @description - createAuthorizationFormConsentRecords is used to create the consent records that are associated to a positive agreement to cookies.
+   * @param individualId - the individualId associated to the user that is accepting the terms
+   * @param relatedAuthorizationFormNames - the list of authorization form records that is being used to create the consent records
+   */
+  public static List<cookiecon__CookieConsent__c> createAuthorizationFormConsentRecords(Id individualId, List<Map<String, String>> cookiePreferences) {
+    List<cookiecon__CookieConsent__c> authorizationFormConsentRecords = new List<cookiecon__CookieConsent__c>();
+    for (Map<String, String> cookiePreference : cookiePreferences) {
+      List<cookiecon__CookieConsentCategory__c> cookieConsentCategories = [
+        SELECT Id, Name
+        FROM cookiecon__CookieConsentCategory__c
+        WHERE Id = :cookiePreference.get('authorizationFormId')
+        WITH SECURITY_ENFORCED
+        LIMIT 1
+      ];
+      cookiecon__CookieConsentCategory__c cookieConsentCategory = (cookieConsentCategories.size() == 1) ? cookieConsentCategories.get(0) : null;
+      cookiecon__CookieConsent__c newAuthorizationFormConsentRecord = new cookiecon__CookieConsent__c();
+      newAuthorizationFormConsentRecord.Name = cookieConsentCategory.Name;
+      newAuthorizationFormConsentRecord.cookiecon__CookieConsentCategory__c = cookieConsentCategory.Id;
+      newAuthorizationFormConsentRecord.cookiecon__ConsentCapturedSource__c = 'Salesforce Community';
+      newAuthorizationFormConsentRecord.cookiecon__ConsentCapturedSourceType__c = 'Web';
+      newAuthorizationFormConsentRecord.cookiecon__ConsentGiverId__c = individualId;
+      if (cookiePreference.get('value') == 'true') {
+        newAuthorizationFormConsentRecord.cookiecon__Status__c = 'Agreed';
+      } else if (cookiePreference.get('value') == 'false') {
+        newAuthorizationFormConsentRecord.cookiecon__Status__c = 'Declined';
+      }
+      authorizationFormConsentRecords.add(newAuthorizationFormConsentRecord);
+    }
+    insert authorizationFormConsentRecords;
+    return authorizationFormConsentRecords;
+    /*
+    SObjectAccessDecision sanitisedRecords = Security.stripInaccessible(AccessType.CREATABLE, authorizationFormConsentRecords);
+    insert sanitisedRecords.getRecords();
+    return sanitisedRecords.getRecords();
+    */
+  }
+
+  /**
+   * verifyCookieConsentGranted is called  by verifyCookieConsent if an Individual has been matched to the browserId
+   * It gets a list of the available cookie consent definitions, the related authorization form names and then queries a
+   * list of valid authorization form consent records that fit those definitions.
+   * @param individualId - the individual record associated to the browserId
+   */
+  public static Boolean verifyCookieConsentGranted(Id individualId) {
+    List<cookiecon__CookieConsentCategory__c> cookieConsentCategories = CookieConsentService.getCookieConsentCategories();
+    Set<Id> authFormIds = (new Map<Id, SObject>(cookieConsentCategories)).keySet();
+    List<cookiecon__CookieConsent__c> authorizationFormConsents = [
+      SELECT Id
+      FROM cookiecon__CookieConsent__c
+      WHERE cookiecon__CookieConsentCategory__c IN :authFormIds AND cookiecon__ConsentGiverId__c = :individualId
+      WITH SECURITY_ENFORCED
+    ];
+    if (authorizationFormConsents.size() >= cookieConsentCategories.size()) {
+      return true;
+    }
+    return false;
+  }
+}
