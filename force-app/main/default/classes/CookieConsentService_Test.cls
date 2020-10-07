@@ -98,7 +98,7 @@ public with sharing class CookieConsentService_Test {
 
     cookiePreferences.add(preferenceRow);
 
-    Boolean createRecords = CookieConsentService.createCookieConsentRecords('123456789', cookiePreferences);
+    Boolean createRecords = CookieConsentServiceGuestHelper.createCookieConsentRecords('123456789', cookiePreferences);
 
     Boolean result = null;
     System.runAs(guestUser) {
@@ -130,11 +130,11 @@ public with sharing class CookieConsentService_Test {
 
     cookiePreferences.add(preferenceRow);
 
-    Boolean createRecords = CookieConsentService.createCookieConsentRecords('123456789', cookiePreferences);
+    Boolean createRecords = CookieConsentServiceGuestHelper.createCookieConsentRecords('123456789', cookiePreferences);
 
     List<String> cookiesToDelete = new List<String>();
     System.runAs(guestUser) {
-      cookiesToDelete = CookieConsentService.getCookiesToDelete('123456789');
+      cookiesToDelete = CookieConsentServiceGuestHelper.getCookiesToDelete('123456789');
     }
 
     Test.stopTest();
