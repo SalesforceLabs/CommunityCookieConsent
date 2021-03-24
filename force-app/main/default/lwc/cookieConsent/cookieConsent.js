@@ -2,7 +2,7 @@ import { LightningElement, track, api } from "lwc";
 import getCookieData from "@salesforce/apex/CookieConsentService.getCookieData";
 import createCookieConsentRecords from "@salesforce/apex/CookieConsentService.createCookieConsentRecords";
 import verifyBrowserId from "@salesforce/apex/CookieConsentService.verifyBrowserId";
-import getCookiesToDelete from "@salesforce/apex/CookieConsentService.getCookiesToDelete";
+import getCookiesToDelete from "@salesforce/apex/CookieConsentServiceGuestHelper.getCookiesToDelete";
 
 export default class CookieConsent extends LightningElement {
   // State
