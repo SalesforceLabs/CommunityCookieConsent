@@ -2,8 +2,8 @@
 public with sharing class CookieConsentService_Test {
   @testSetup
   static void createTestData() {
-    cookiecon__CookieConsentCategory__c cookieConsentCategory = CookieConsentTestUtilities.createCookieConsentCategory();
-    cookiecon__Cookie__c cookie = CookieConsentTestUtilities.createCookie(cookieConsentCategory.Id);
+    CookieConsentCategory__c cookieConsentCategory = CookieConsentTestUtilities.createCookieConsentCategory();
+    Cookie__c cookie = CookieConsentTestUtilities.createCookie(cookieConsentCategory.Id);
     CookieConsentTestUtilities.createUser();
     CookieConsentTestUtilities.createStandardUser();
   }
@@ -80,8 +80,8 @@ public with sharing class CookieConsentService_Test {
 
   @isTest
   static void testVerifyBrowserId_guestUserWithIndividualAndPreferences() {
-    List<cookiecon__CookieConsentCategory__c> cookieConsentCategories = [SELECT Id FROM cookiecon__CookieConsentCategory__c LIMIT 1];
-    cookiecon__CookieConsentCategory__c cookieConsentCategory = (cookieConsentCategories.size() == 1) ? cookieConsentCategories.get(0) : null;
+    List<CookieConsentCategory__c> cookieConsentCategories = [SELECT Id FROM CookieConsentCategory__c LIMIT 1];
+    CookieConsentCategory__c cookieConsentCategory = (cookieConsentCategories.size() == 1) ? cookieConsentCategories.get(0) : null;
     Individual individual = CookieConsentTestUtilities.createIndividual();
 
     Test.startTest();
@@ -112,8 +112,8 @@ public with sharing class CookieConsentService_Test {
 
   @isTest
   static void testGetCookiesToDelete_guestUserWithIndividualAndPreferences() {
-    List<cookiecon__CookieConsentCategory__c> cookieConsentCategories = [SELECT Id FROM cookiecon__CookieConsentCategory__c LIMIT 1];
-    cookiecon__CookieConsentCategory__c cookieConsentCategory = (cookieConsentCategories.size() == 1) ? cookieConsentCategories.get(0) : null;
+    List<CookieConsentCategory__c> cookieConsentCategories = [SELECT Id FROM CookieConsentCategory__c LIMIT 1];
+    CookieConsentCategory__c cookieConsentCategory = (cookieConsentCategories.size() == 1) ? cookieConsentCategories.get(0) : null;
     Individual individual = CookieConsentTestUtilities.createIndividual();
 
     Test.startTest();

@@ -1,12 +1,12 @@
 [
   {
-    "sobject": "cookiecon__CookieConsentCategory__c",
+    "sobject": "CookieConsentCategory__c",
     "saveRefs": true,
     "resolveRefs": false,
     "files": ["cookie-category-data.json"]
   },
   {
-    "sobject": "cookiecon__Cookie__c",
+    "sobject": "Cookie__c",
     "saveRefs": false,
     "resolveRefs": true,
     "files": ["cookie-data.json"]

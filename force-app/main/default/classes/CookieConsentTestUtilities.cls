@@ -39,9 +39,9 @@ public with sharing class CookieConsentTestUtilities {
 
     }
 
-    public static cookiecon__CookieConsentCategory__c createCookieConsentCategory(){
+    public static CookieConsentCategory__c createCookieConsentCategory(){
 
-        cookiecon__CookieConsentCategory__c cookieConsentCategory = new cookiecon__CookieConsentCategory__c(Name = 'Test', cookiecon__Description__c = 'Description', cookiecon__DefaultValue__c = true, cookiecon__Manditory__c = true, cookiecon__AdditionalInformation__c = 'Test');
+        CookieConsentCategory__c cookieConsentCategory = new CookieConsentCategory__c(Name = 'Test', Description__c = 'Description', DefaultValue__c = true, Manditory__c = true, AdditionalInformation__c = 'Test');
 
         insert cookieConsentCategory;
 
@@ -49,9 +49,9 @@ public with sharing class CookieConsentTestUtilities {
 
     }
 
-    public static cookiecon__Cookie__c createCookie(Id categoryId){
+    public static Cookie__c createCookie(Id categoryId){
 
-        cookiecon__Cookie__c cookie = new cookiecon__Cookie__c(Name = 'Test', cookiecon__Description__c = 'Test', cookiecon__CookieConsentCategory__c = categoryId);
+        Cookie__c cookie = new Cookie__c(Name = 'Test', Description__c = 'Test', CookieConsentCategory__c = categoryId);
 
         insert cookie;
 
@@ -61,7 +61,7 @@ public with sharing class CookieConsentTestUtilities {
 
     public static Individual createIndividual() {
 
-        Individual newIndividual = new Individual(FirstName = 'Test', LastName = 'Test', cookiecon__BrowserId__c = '123456789');
+        Individual newIndividual = new Individual(FirstName = 'Test', LastName = 'Test', BrowserId__c = '123456789');
 
         insert newIndividual;
 

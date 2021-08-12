@@ -2,228 +2,228 @@
   "records": [
     {
       "attributes": {
-        "type": "cookiecon__Cookie__c",
-        "referenceId": "cookiecon__Cookie__cRef1"
+        "type": "Cookie__c",
+        "referenceId": "Cookie__cRef1"
       },
       "Name": "id_adcloud",
-      "cookiecon__Description__c": "Adobe Advertising Cloud DSP (Demand Side Platform) ID",
-      "cookiecon__CookieConsentCategory__c": "@cookiecon__CookieConsentCategory__cRef1"
+      "Description__c": "Adobe Advertising Cloud DSP (Demand Side Platform) ID",
+      "CookieConsentCategory__c": "@CookieConsentCategory__cRef1"
     },
     {
       "attributes": {
-        "type": "cookiecon__Cookie__c",
-        "referenceId": "cookiecon__Cookie__cRef2"
+        "type": "Cookie__c",
+        "referenceId": "Cookie__cRef2"
       },
       "Name": "disco",
-      "cookiecon__Description__c": "Used to verify the last Salesforce org that was accessed on the same browser for session discovery",
-      "cookiecon__CookieConsentCategory__c": "@cookiecon__CookieConsentCategory__cRef2"
+      "Description__c": "Used to verify the last Salesforce org that was accessed on the same browser for session discovery",
+      "CookieConsentCategory__c": "@CookieConsentCategory__cRef2"
     },
     {
       "attributes": {
-        "type": "cookiecon__Cookie__c",
-        "referenceId": "cookiecon__Cookie__cRef3"
+        "type": "Cookie__c",
+        "referenceId": "Cookie__cRef3"
       },
       "Name": "inst",
-      "cookiecon__Description__c": "Used to optimize routing to the user's instance",
-      "cookiecon__CookieConsentCategory__c": "@cookiecon__CookieConsentCategory__cRef2"
+      "Description__c": "Used to optimize routing to the user's instance",
+      "CookieConsentCategory__c": "@CookieConsentCategory__cRef2"
     },
     {
       "attributes": {
-        "type": "cookiecon__Cookie__c",
-        "referenceId": "cookiecon__Cookie__cRef4"
+        "type": "Cookie__c",
+        "referenceId": "Cookie__cRef4"
       },
       "Name": "alohaEpt",
-      "cookiecon__Description__c": "Used to log page load EPT (Experience Page Time) for Classic UI pages",
-      "cookiecon__CookieConsentCategory__c": "@cookiecon__CookieConsentCategory__cRef2"
+      "Description__c": "Used to log page load EPT (Experience Page Time) for Classic UI pages",
+      "CookieConsentCategory__c": "@CookieConsentCategory__cRef2"
     },
     {
       "attributes": {
-        "type": "cookiecon__Cookie__c",
-        "referenceId": "cookiecon__Cookie__cRef5"
+        "type": "Cookie__c",
+        "referenceId": "Cookie__cRef5"
       },
       "Name": "webact",
-      "cookiecon__Description__c": "Used to collect metrics per page view for personalization.",
-      "cookiecon__CookieConsentCategory__c": "@cookiecon__CookieConsentCategory__cRef2"
+      "Description__c": "Used to collect metrics per page view for personalization.",
+      "CookieConsentCategory__c": "@CookieConsentCategory__cRef2"
     },
     {
       "attributes": {
-        "type": "cookiecon__Cookie__c",
-        "referenceId": "cookiecon__Cookie__cRef6"
+        "type": "Cookie__c",
+        "referenceId": "Cookie__cRef6"
       },
       "Name": "BrowserId",
-      "cookiecon__Description__c": "Used to collect metrics, such as the number of visitors to a community.",
-      "cookiecon__CookieConsentCategory__c": "@cookiecon__CookieConsentCategory__cRef2"
+      "Description__c": "Used to collect metrics, such as the number of visitors to a community.",
+      "CookieConsentCategory__c": "@CookieConsentCategory__cRef2"
     },
     {
       "attributes": {
-        "type": "cookiecon__Cookie__c",
-        "referenceId": "cookiecon__Cookie__cRef7"
+        "type": "Cookie__c",
+        "referenceId": "Cookie__cRef7"
       },
       "Name": "autocomplete",
-      "cookiecon__Description__c": "Used to determine whether the browser remembers a userÕs login username.",
-      "cookiecon__CookieConsentCategory__c": "@cookiecon__CookieConsentCategory__cRef2"
+      "Description__c": "Used to determine whether the browser remembers a userÕs login username.",
+      "CookieConsentCategory__c": "@CookieConsentCategory__cRef2"
     },
     {
       "attributes": {
-        "type": "cookiecon__Cookie__c",
-        "referenceId": "cookiecon__Cookie__cRef8"
+        "type": "Cookie__c",
+        "referenceId": "Cookie__cRef8"
       },
       "Name": "oinfo",
-      "cookiecon__Description__c": "Used to track the State, Edition and orgID of a customer's org.",
-      "cookiecon__CookieConsentCategory__c": "@cookiecon__CookieConsentCategory__cRef2"
+      "Description__c": "Used to track the State, Edition and orgID of a customer's org.",
+      "CookieConsentCategory__c": "@CookieConsentCategory__cRef2"
     },
     {
       "attributes": {
-        "type": "cookiecon__Cookie__c",
-        "referenceId": "cookiecon__Cookie__cRef9"
+        "type": "Cookie__c",
+        "referenceId": "Cookie__cRef9"
       },
       "Name": "_ga",
-      "cookiecon__Description__c": "A third-party cookie thatÕs used if the community admin chooses toÊtrack community users with a Google Analytics tracking ID.",
-      "cookiecon__CookieConsentCategory__c": "@cookiecon__CookieConsentCategory__cRef2"
+      "Description__c": "A third-party cookie thatÕs used if the community admin chooses toÊtrack community users with a Google Analytics tracking ID.",
+      "CookieConsentCategory__c": "@CookieConsentCategory__cRef2"
     },
     {
       "attributes": {
-        "type": "cookiecon__Cookie__c",
-        "referenceId": "cookiecon__Cookie__cRef10"
+        "type": "Cookie__c",
+        "referenceId": "Cookie__cRef10"
       },
       "Name": "directMessage InboxVisit Timestamp",
-      "cookiecon__Description__c": "Used by Direct Message to determine the last visit to the inbox.",
-      "cookiecon__CookieConsentCategory__c": "@cookiecon__CookieConsentCategory__cRef2"
+      "Description__c": "Used by Direct Message to determine the last visit to the inbox.",
+      "CookieConsentCategory__c": "@CookieConsentCategory__cRef2"
     },
     {
       "attributes": {
-        "type": "cookiecon__Cookie__c",
-        "referenceId": "cookiecon__Cookie__cRef11"
+        "type": "Cookie__c",
+        "referenceId": "Cookie__cRef11"
       },
       "Name": "expid_",
-      "cookiecon__Description__c": "Used to render pages based on specified brand.",
-      "cookiecon__CookieConsentCategory__c": "@cookiecon__CookieConsentCategory__cRef2"
+      "Description__c": "Used to render pages based on specified brand.",
+      "CookieConsentCategory__c": "@CookieConsentCategory__cRef2"
     },
     {
       "attributes": {
-        "type": "cookiecon__Cookie__c",
-        "referenceId": "cookiecon__Cookie__cRef12"
+        "type": "Cookie__c",
+        "referenceId": "Cookie__cRef12"
       },
       "Name": "sid_Client",
-      "cookiecon__Description__c": "Used to validate orgid and userid on the client side.",
-      "cookiecon__CookieConsentCategory__c": "@cookiecon__CookieConsentCategory__cRef3"
+      "Description__c": "Used to validate orgid and userid on the client side.",
+      "CookieConsentCategory__c": "@CookieConsentCategory__cRef3"
     },
     {
       "attributes": {
-        "type": "cookiecon__Cookie__c",
-        "referenceId": "cookiecon__Cookie__cRef13"
+        "type": "Cookie__c",
+        "referenceId": "Cookie__cRef13"
       },
       "Name": "sid",
-      "cookiecon__Description__c": "Used to validate user session.",
-      "cookiecon__CookieConsentCategory__c": "@cookiecon__CookieConsentCategory__cRef3"
+      "Description__c": "Used to validate user session.",
+      "CookieConsentCategory__c": "@CookieConsentCategory__cRef3"
     },
     {
       "attributes": {
-        "type": "cookiecon__Cookie__c",
-        "referenceId": "cookiecon__Cookie__cRef14"
+        "type": "Cookie__c",
+        "referenceId": "Cookie__cRef14"
       },
       "Name": "renderCtx",
-      "cookiecon__Description__c": "Used to track community context.",
-      "cookiecon__CookieConsentCategory__c": "@cookiecon__CookieConsentCategory__cRef3"
+      "Description__c": "Used to track community context.",
+      "CookieConsentCategory__c": "@CookieConsentCategory__cRef3"
     },
     {
       "attributes": {
-        "type": "cookiecon__Cookie__c",
-        "referenceId": "cookiecon__Cookie__cRef15"
+        "type": "Cookie__c",
+        "referenceId": "Cookie__cRef15"
       },
       "Name": "RRetURL",
-      "cookiecon__Description__c": "Used for \"log in as\" to return to original page",
-      "cookiecon__CookieConsentCategory__c": "@cookiecon__CookieConsentCategory__cRef3"
+      "Description__c": "Used for \"log in as\" to return to original page",
+      "CookieConsentCategory__c": "@CookieConsentCategory__cRef3"
     },
     {
       "attributes": {
-        "type": "cookiecon__Cookie__c",
-        "referenceId": "cookiecon__Cookie__cRef16"
+        "type": "Cookie__c",
+        "referenceId": "Cookie__cRef16"
       },
       "Name": "RRetURL2",
-      "cookiecon__Description__c": "Used for portal \"log in as\" to return to original page",
-      "cookiecon__CookieConsentCategory__c": "@cookiecon__CookieConsentCategory__cRef3"
+      "Description__c": "Used for portal \"log in as\" to return to original page",
+      "CookieConsentCategory__c": "@CookieConsentCategory__cRef3"
     },
     {
       "attributes": {
-        "type": "cookiecon__Cookie__c",
-        "referenceId": "cookiecon__Cookie__cRef17"
+        "type": "Cookie__c",
+        "referenceId": "Cookie__cRef17"
       },
       "Name": "rsid",
-      "cookiecon__Description__c": "Used for an admin user to \"log in as\" one of their org user",
-      "cookiecon__CookieConsentCategory__c": "@cookiecon__CookieConsentCategory__cRef3"
+      "Description__c": "Used for an admin user to \"log in as\" one of their org user",
+      "CookieConsentCategory__c": "@CookieConsentCategory__cRef3"
     },
     {
       "attributes": {
-        "type": "cookiecon__Cookie__c",
-        "referenceId": "cookiecon__Cookie__cRef18"
+        "type": "Cookie__c",
+        "referenceId": "Cookie__cRef18"
       },
       "Name": "rsid2",
-      "cookiecon__Description__c": "Used for an admin user to \"log in as\" one of their org portal user",
-      "cookiecon__CookieConsentCategory__c": "@cookiecon__CookieConsentCategory__cRef3"
+      "Description__c": "Used for an admin user to \"log in as\" one of their org portal user",
+      "CookieConsentCategory__c": "@CookieConsentCategory__cRef3"
     },
     {
       "attributes": {
-        "type": "cookiecon__Cookie__c",
-        "referenceId": "cookiecon__Cookie__cRef19"
+        "type": "Cookie__c",
+        "referenceId": "Cookie__cRef19"
       },
       "Name": "pctrk",
-      "cookiecon__Description__c": "Used to distinguish guest users from each other. No user info stored",
-      "cookiecon__CookieConsentCategory__c": "@cookiecon__CookieConsentCategory__cRef3"
+      "Description__c": "Used to distinguish guest users from each other. No user info stored",
+      "CookieConsentCategory__c": "@CookieConsentCategory__cRef3"
     },
     {
       "attributes": {
-        "type": "cookiecon__Cookie__c",
-        "referenceId": "cookiecon__Cookie__cRef20"
+        "type": "Cookie__c",
+        "referenceId": "Cookie__cRef20"
       },
       "Name": "QCQQ",
-      "cookiecon__Description__c": "UsedÊto detect the official login page for Forced Login POST detection",
-      "cookiecon__CookieConsentCategory__c": "@cookiecon__CookieConsentCategory__cRef3"
+      "Description__c": "UsedÊto detect the official login page for Forced Login POST detection",
+      "CookieConsentCategory__c": "@CookieConsentCategory__cRef3"
     },
     {
       "attributes": {
-        "type": "cookiecon__Cookie__c",
-        "referenceId": "cookiecon__Cookie__cRef21"
+        "type": "Cookie__c",
+        "referenceId": "Cookie__cRef21"
       },
       "Name": "idccsrf",
-      "cookiecon__Description__c": "Used for SSO authentication as CSRF protection",
-      "cookiecon__CookieConsentCategory__c": "@cookiecon__CookieConsentCategory__cRef3"
+      "Description__c": "Used for SSO authentication as CSRF protection",
+      "CookieConsentCategory__c": "@CookieConsentCategory__cRef3"
     },
     {
       "attributes": {
-        "type": "cookiecon__Cookie__c",
-        "referenceId": "cookiecon__Cookie__cRef22"
+        "type": "Cookie__c",
+        "referenceId": "Cookie__cRef22"
       },
       "Name": "sfdc-stream",
-      "cookiecon__Description__c": "Used to redirect server requests for sticky sessions.",
-      "cookiecon__CookieConsentCategory__c": "@cookiecon__CookieConsentCategory__cRef3"
+      "Description__c": "Used to redirect server requests for sticky sessions.",
+      "CookieConsentCategory__c": "@CookieConsentCategory__cRef3"
     },
     {
       "attributes": {
-        "type": "cookiecon__Cookie__c",
-        "referenceId": "cookiecon__Cookie__cRef23"
+        "type": "Cookie__c",
+        "referenceId": "Cookie__cRef23"
       },
       "Name": "clientSrc",
-      "cookiecon__Description__c": "Used to validate the IP from where a user logs in.",
-      "cookiecon__CookieConsentCategory__c": "@cookiecon__CookieConsentCategory__cRef3"
+      "Description__c": "Used to validate the IP from where a user logs in.",
+      "CookieConsentCategory__c": "@CookieConsentCategory__cRef3"
     },
     {
       "attributes": {
-        "type": "cookiecon__Cookie__c",
-        "referenceId": "cookiecon__Cookie__cRef24"
+        "type": "Cookie__c",
+        "referenceId": "Cookie__cRef24"
       },
       "Name": "force-stream",
-      "cookiecon__Description__c": "Used to redirect server requests for sticky sessions.",
-      "cookiecon__CookieConsentCategory__c": "@cookiecon__CookieConsentCategory__cRef3"
+      "Description__c": "Used to redirect server requests for sticky sessions.",
+      "CookieConsentCategory__c": "@CookieConsentCategory__cRef3"
     },
     {
       "attributes": {
-        "type": "cookiecon__Cookie__c",
-        "referenceId": "cookiecon__Cookie__cRef25"
+        "type": "Cookie__c",
+        "referenceId": "Cookie__cRef25"
       },
       "Name": "oid",
-      "cookiecon__Description__c": "Used to redirect a user to the correct Salesforce org and assist the user for the next login.",
-      "cookiecon__CookieConsentCategory__c": "@cookiecon__CookieConsentCategory__cRef3"
+      "Description__c": "Used to redirect a user to the correct Salesforce org and assist the user for the next login.",
+      "CookieConsentCategory__c": "@CookieConsentCategory__cRef3"
     }
   ]
 }

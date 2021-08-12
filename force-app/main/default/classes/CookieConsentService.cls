@@ -37,17 +37,17 @@ public with sharing class CookieConsentService {
   @AuraEnabled(Cacheable=true)
   public static List<Map<String, Object>> getCookieData() {
     Id currentUserId = UserInfo.getUserId();
-    List<cookiecon__CookieConsentCategory__c> cookieConsentCategories = CookieConsentServiceGuestHelper.getCookieConsentCategories();
+    List<CookieConsentCategory__c> cookieConsentCategories = CookieConsentServiceGuestHelper.getCookieConsentCategories();
     List<Map<String, Object>> finalCookieData = new List<Map<String, Object>>();
-    for (cookiecon__CookieConsentCategory__c cookieConsentCategory : cookieConsentCategories) {
-      List<cookiecon__Cookie__c> relatedCookies = CookieConsentServiceGuestHelper.getRelatedCookies(cookieConsentCategory.Id);
+    for (CookieConsentCategory__c cookieConsentCategory : cookieConsentCategories) {
+      List<Cookie__c> relatedCookies = CookieConsentServiceGuestHelper.getRelatedCookies(cookieConsentCategory.Id);
       Map<String, Object> sectionItem = new Map<String, Object>();
       sectionItem.put('SectionName', cookieConsentCategory.Name);
-      sectionItem.put('SectionDescription', cookieConsentCategory.cookiecon__Description__c);
+      sectionItem.put('SectionDescription', cookieConsentCategory.Description__c);
       sectionItem.put('RelatedAuthorizationFormId', cookieConsentCategory.Id);
-      sectionItem.put('Mandatory', cookieConsentCategory.cookiecon__Manditory__c);
-      sectionItem.put('DefaultValue', cookieConsentCategory.cookiecon__DefaultValue__c);
-      sectionItem.put('AdditionalInformation', cookieConsentCategory.cookiecon__AdditionalInformation__c);
+      sectionItem.put('Mandatory', cookieConsentCategory.Manditory__c);
+      sectionItem.put('DefaultValue', cookieConsentCategory.DefaultValue__c);
+      sectionItem.put('AdditionalInformation', cookieConsentCategory.AdditionalInformation__c);
       sectionItem.put('SectionCookies', relatedCookies);
       if (finalCookieData.isEmpty()) {
         sectionItem.put('ShowSection', true);
