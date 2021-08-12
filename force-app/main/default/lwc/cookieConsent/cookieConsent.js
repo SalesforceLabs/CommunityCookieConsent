@@ -1,8 +1,8 @@
 import { LightningElement, track, api } from "lwc";
 import getCookieData from "@salesforce/apex/CookieConsentService.getCookieData";
-import createCookieConsentRecords from "@salesforce/apex/CookieConsentService.createCookieConsentRecords";
+import createCookieConsentRecords from "@salesforce/apex/CookieConsentServiceGuestHelper.createCookieConsentRecords";
 import verifyBrowserId from "@salesforce/apex/CookieConsentService.verifyBrowserId";
-import getCookiesToDelete from "@salesforce/apex/CookieConsentService.getCookiesToDelete";
+import getCookiesToDelete from "@salesforce/apex/CookieConsentServiceGuestHelper.getCookiesToDelete";
 
 export default class CookieConsent extends LightningElement {
   // State
@@ -11,11 +11,12 @@ export default class CookieConsent extends LightningElement {
   showCookieDialog;
   preview;
   loading = true;
-
+  finterprintInitialized = false;
   // Data
   cookiePreferences = [];
   @track cookieData;
   uniqueId;
+  client;
 
   // Design
   @api headingLabel = "Manage Cookies";
@@ -41,15 +42,15 @@ export default class CookieConsent extends LightningElement {
       this.getBrowserIdCookie();
     } else if (!this.useRelaxedCSP && !this.preview) {
       try {
-        this.receiveCookiesFromHead = this.receiveCookiesFromHead.bind(this);
-        window.addEventListener("documentCookies", this.receiveCookiesFromHead, false);
+        //this.receiveCookiesFromHead = this.receiveCookiesFromHead.bind(this);
+        window.addEventListener("documentCookies", this.receiveCookiesFromHead.bind(this), false);
       } catch (e) {
         console.log("error: " + e);
       }
       this.getCookiesFromHead();
     } else if (this.previewInBuilder) {
       this.uniqueId = Math.random();
-      this.verifyBrowserId();
+      this.verifyBrowserIdWithUniqueId();
     }
   }
 
@@ -58,8 +59,13 @@ export default class CookieConsent extends LightningElement {
     if (!urlToCheck) {
       urlToCheck = window.location.hostname;
     }
-    urlToCheck = urlToCheck.toLowerCase();
-    this.preview = urlToCheck.indexOf("sitepreview") >= 0 || urlToCheck.indexOf("livepreview") >= 0;
+    if (!urlToCheck) {
+      this.preview = false;
+    } else {
+      urlToCheck = urlToCheck.toLowerCase();
+      this.preview = urlToCheck.indexOf("sitepreview") >= 0 || urlToCheck.indexOf("livepreview") >= 0;  
+    }
+
   }
 
   getCookiesFromHead() {
@@ -67,6 +73,7 @@ export default class CookieConsent extends LightningElement {
     window.dispatchEvent(event);
   }
 
+  @api
   receiveCookiesFromHead(e) {
     let response = e.detail;
     let browserIdCookieName = "BrowserId";
@@ -78,7 +85,7 @@ export default class CookieConsent extends LightningElement {
       this.uniqueId = gaCookieValue ? gaCookieValue[2] : null;
     }
     if (this.uniqueId) {
-      this.verifyBrowserId();
+      this.verifyBrowserIdWithUniqueId();
     } else {
       this.getCookiesFromHead();
     }
@@ -89,7 +96,8 @@ export default class CookieConsent extends LightningElement {
     let cookieValue = document.cookie.match("(^|;) ?" + cookieName + "=([^;]*)(;|$)");
     this.uniqueId = cookieValue ? cookieValue[2] : null;
     if (this.uniqueId) {
-      this.verifyBrowserId();
+      let altThis = this;
+      altThis.verifyBrowserIdWithUniqueId();
     } else {
       this.getBrowserIdSecCookie();
     }
@@ -100,7 +108,8 @@ export default class CookieConsent extends LightningElement {
     let cookieValue = document.cookie.match("(^|;) ?" + cookieName + "=([^;]*)(;|$)");
     this.uniqueId = cookieValue ? cookieValue[2] : null;
     if (this.uniqueId) {
-      this.verifyBrowserId();
+      let altThis = this;
+      altThis.verifyBrowserIdWithUniqueId();
     } else {
       this.getGaCookie();
     }
@@ -111,13 +120,14 @@ export default class CookieConsent extends LightningElement {
     let cookieValue = document.cookie.match("(^|;) ?" + cookieName + "=([^;]*)(;|$)");
     this.uniqueId = cookieValue ? cookieValue[2] : null;
     if (this.uniqueId) {
-      this.verifyBrowserId();
+      this.verifyBrowserIdWithUniqueId();
     } else {
       this.getBrowserIdCookie();
     }
   }
 
-  verifyBrowserId() {
+  @api
+  verifyBrowserIdWithUniqueId() {
     verifyBrowserId({ browserId: this.uniqueId })
       .then(data => {
         if (data === false) {
@@ -134,6 +144,7 @@ export default class CookieConsent extends LightningElement {
       });
   }
 
+  @api
   getCookieSectionsAndData() {
     getCookieData()
       .then(data => {
@@ -145,6 +156,7 @@ export default class CookieConsent extends LightningElement {
       .catch(error => {});
   }
 
+  @api
   setStartingCookiePreferences(cookieData) {
     for (let i = 0, len = cookieData.length; i < len; i++) {
       this.cookiePreferences.push({ authorizationFormId: cookieData[i].RelatedAuthorizationFormId, value: cookieData[i].DefaultValue });

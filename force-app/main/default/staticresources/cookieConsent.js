@@ -6,12 +6,14 @@
  */
 if (window.XMLHttpRequest) {
   xmlhttp = new XMLHttpRequest();
+  console.log('requesting');
   xmlhttp.open("POST", "/_/52609e00b7ee307e", false);
   xmlhttp.send(null);
 }
 window.addEventListener("componentConnected", function(e) {
   let cookies = document.cookie;
   let event = new CustomEvent("documentCookies", { detail: cookies });
+  //getFingerprint();
   window.dispatchEvent(event);
 });
 
@@ -24,3 +26,12 @@ window.addEventListener("deleteCookies", function(e) {
     document.cookie = cookieWithCommunityPath;
   }
 });
+
+/*
+function getFingerprint(){
+  //console.log('checking fingerprint');
+  const client = new ClientJS();
+  const fingerprint = client.getFingerprint();
+  //console.log('fingerprint', fingerprint);
+}
+*/

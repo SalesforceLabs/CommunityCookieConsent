@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>49.0</apiVersion>
+    <apiVersion>48.0</apiVersion>
     <description>Cookie Consent</description>
     <isExposed>true</isExposed>
     <masterLabel>Cookie Consent</masterLabel>
@@ -13,23 +13,23 @@
     </targets>
     <targetConfigs>
         <targetConfig targets="lightningCommunity__Default">
-            <property name="displayType" type="String" default="footer-fixed" datasource="footer,modal,page" laabel="Cookie Display Type" />
-            <property name="useRelaxedCSP" type="Boolean" label="Used Relaxed CSP And Locker Off" description="If selected, your component can only be used in a community that has Locker Service turned off" />
-            <property name="headingLabel" type="String" default="" label="Heading Label" />
-            <property name="instructions" type="String" default="" label="User Instructions" />
-            <property name="informationButtonLabel" type="String" default="" label="Information Button Label" />
-            <property name="informationButtonLink" type="String" default="" label="User Information Button Link" />
-            <property name="confirmButtonLabel" type="String" default="" label="Confirm Button Label" />
-            <property name="rejectButtonLabel" type="String" default="" label="Reject Button Label" />
-            <property name="viewCookiesLabel" type="String" default="" label="View Cookies Link Label" />
-            <property name="viewCookiesLink" type="String" default="" label="View Cookies Link" />
-            <property name="cookieFooterRelative" type="Boolean" default="false" label="Used Relative Footer Positioning" description="If selected, the footer will be no longer be fixed to the window" />
-            <property name="cookieFooterPadding" type="String" default="small" datasource="xx-small, x-small, small, medium, large, none" label="Footer Padding" />
-            <property name="cookieFooterButtonAlignment" type="String" default="left" datasource="left, center, right" label="Footer Button Alignment" />
-            <property name="cookieFooterBackgroundColor" type="Color" default="rgb(0,0,0)" label="Footer Background Color" />
-            <property name="cookieFooterTextColor" type="Color" default="rgb(250, 250, 250)" label="Footer Text Color" />
-            <property name="cookieFooterLinkColor" type="Color" default="rgb(250, 250, 250)" label="Footer Link Color" />
-            <property name="previewInBuilder" type="Boolean" label="Preview in Builder" description="Preview the component while you're working in the experience builder" />
+            <property name="displayType" type="String" default="footer-fixed" datasource="footer,modal,page" label="Cookie Display Type"/>
+            <property name="useRelaxedCSP" type="Boolean" label="Used Relaxed CSP" description="If selected, your component can only be used in a community that has Locker Service turned off"/>
+            <property name="headingLabel" type="String" default="" label="Heading Label"/>
+            <property name="instructions" type="String" default="" label="User Instructions"/>
+            <property name="informationButtonLabel" type="String" default="" label="Information Button Label"/>
+            <property name="informationButtonLink" type="String" default="" label="User Information Button Link"/>
+            <property name="confirmButtonLabel" type="String" default="" label="Confirm Button Label"/>
+            <property name="rejectButtonLabel" type="String" default="" label="Reject Button Label"/>
+            <property name="viewCookiesLabel" type="String" default="" label="View Cookies Link Label"/>
+            <property name="viewCookiesLink" type="String" default="" label="View Cookies Link"/>
+            <property name="cookieFooterRelative" type="Boolean" default="false" label="Used Relative Footer Positioning" description="If selected, the footer will be no longer be fixed to the window"/>
+            <property name="cookieFooterPadding" type="String" default="small" datasource="xx-small, x-small, small, medium, large, none" label="Footer Padding"/>
+            <property name="cookieFooterButtonAlignment" type="String" default="left" datasource="left, center, right" label="Footer Button Alignment"/>
+            <property name="cookieFooterBackgroundColor" type="Color" default="rgb(0,0,0)" label="Footer Background Color"/>
+            <property name="cookieFooterTextColor" type="Color" default="rgb(250, 250, 250)" label="Footer Text Color"/>
+            <property name="cookieFooterLinkColor" type="Color" default="rgb(250, 250, 250)" label="Footer Link Color"/>
+            <property name="previewInBuilder" type="Boolean" label="Preview in Builder" description="Preview the component while you're working in the experience builder"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>
