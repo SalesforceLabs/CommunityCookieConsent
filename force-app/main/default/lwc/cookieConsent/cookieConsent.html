@@ -336,6 +336,34 @@
             </div>
           </div>
         </template>
+        <template if:true={showConnectionError}>
+          <div class="slds-size--1-of-1">
+            <div class="slds-box slds-m-bottom--medium slds-theme_info">
+              <div class="slds-grid slds-wrap">
+                <div class="slds-size--1-of-1">
+                  <div class="slds-grid slds-wrap">
+                    <div class="slds-size--1-of-12 slds-align_absolute-center">
+                      <lightning-icon
+                        class="slds-icon slds-icon--small slds-m-right--small slds-col slds-no-flex slds-align--absolute-center"
+                        icon-name="utility:warning"
+                        variant="inverse"
+                        size="medium"
+                      ></lightning-icon>
+                    </div>
+                    <div class="slds-size--11-of-12 slds-align-middle">
+                      <p style="font-size:.9rem;font-weight:bold">
+                        Error
+                      </p>
+                      <p style="font-size:.9rem;">
+                        We have been unable to verify a unique user from this browser - please ensure that the static resources have been configured correctly. 
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
       </div>
     </div>
   </div>

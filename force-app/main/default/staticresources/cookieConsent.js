@@ -4,16 +4,11 @@
  * capture it in this script. We can then get the cookies from the document and create the documentCookies custom event and fire it.
  * This event can be captured by the component for processing.
  */
-if (window.XMLHttpRequest) {
-  xmlhttp = new XMLHttpRequest();
-  console.log('requesting');
-  xmlhttp.open("POST", "/_/52609e00b7ee307e", false);
-  xmlhttp.send(null);
-}
+
 window.addEventListener("componentConnected", function(e) {
-  let cookies = document.cookie;
-  let event = new CustomEvent("documentCookies", { detail: cookies });
-  //getFingerprint();
+  let fingerprint = getFingerprint();
+  console.log('fingerprint ' + fingerprint);
+  let event = new CustomEvent("documentCookies", { detail: fingerprint});
   window.dispatchEvent(event);
 });
 
@@ -27,11 +22,8 @@ window.addEventListener("deleteCookies", function(e) {
   }
 });
 
-/*
 function getFingerprint(){
-  //console.log('checking fingerprint');
   const client = new ClientJS();
   const fingerprint = client.getFingerprint();
-  //console.log('fingerprint', fingerprint);
+  return fingerprint;
 }
-*/

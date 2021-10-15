@@ -12,11 +12,14 @@ export default class CookieConsent extends LightningElement {
   preview;
   loading = true;
   finterprintInitialized = false;
+  showConnectionError;
+
   // Data
   cookiePreferences = [];
   @track cookieData;
   uniqueId;
   client;
+  callCount = 0;
 
   // Design
   @api headingLabel = "Manage Cookies";
@@ -42,7 +45,6 @@ export default class CookieConsent extends LightningElement {
       this.getBrowserIdCookie();
     } else if (!this.useRelaxedCSP && !this.preview) {
       try {
-        //this.receiveCookiesFromHead = this.receiveCookiesFromHead.bind(this);
         window.addEventListener("documentCookies", this.receiveCookiesFromHead.bind(this), false);
       } catch (e) {
         console.log("error: " + e);
@@ -69,62 +71,25 @@ export default class CookieConsent extends LightningElement {
   }
 
   getCookiesFromHead() {
+    this.callCount++;
     let event = new CustomEvent("componentConnected");
     window.dispatchEvent(event);
   }
 
   @api
   receiveCookiesFromHead(e) {
-    let response = e.detail;
-    let browserIdCookieName = "BrowserId";
-    let browserIdCookieValue = response.match("(^|;) ?" + browserIdCookieName + "=([^;]*)(;|$)");
-    this.uniqueId = browserIdCookieValue ? browserIdCookieValue[2] : null;
-    if (this.uniqueId === null) {
-      let gaCookieName = "_ga";
-      let gaCookieValue = response.match("(^|;) ?" + gaCookieName + "=([^;]*)(;|$)");
-      this.uniqueId = gaCookieValue ? gaCookieValue[2] : null;
-    }
+    console.log('caught event');
+    console.log(e.detail);
+    this.uniqueId = e.detail;
     if (this.uniqueId) {
       this.verifyBrowserIdWithUniqueId();
-    } else {
+    } else if(this.callCount <= 5) {
       this.getCookiesFromHead();
+    } else {
+      this.showConnectionError = true;
     }
   }
 
-  getBrowserIdCookie() {
-    let cookieName = "BrowserId";
-    let cookieValue = document.cookie.match("(^|;) ?" + cookieName + "=([^;]*)(;|$)");
-    this.uniqueId = cookieValue ? cookieValue[2] : null;
-    if (this.uniqueId) {
-      let altThis = this;
-      altThis.verifyBrowserIdWithUniqueId();
-    } else {
-      this.getBrowserIdSecCookie();
-    }
-  }
-
-  getBrowserIdSecCookie() {
-    let cookieName = "BrowserId_sec";
-    let cookieValue = document.cookie.match("(^|;) ?" + cookieName + "=([^;]*)(;|$)");
-    this.uniqueId = cookieValue ? cookieValue[2] : null;
-    if (this.uniqueId) {
-      let altThis = this;
-      altThis.verifyBrowserIdWithUniqueId();
-    } else {
-      this.getGaCookie();
-    }
-  }
-
-  getGaCookie() {
-    let cookieName = "_ga";
-    let cookieValue = document.cookie.match("(^|;) ?" + cookieName + "=([^;]*)(;|$)");
-    this.uniqueId = cookieValue ? cookieValue[2] : null;
-    if (this.uniqueId) {
-      this.verifyBrowserIdWithUniqueId();
-    } else {
-      this.getBrowserIdCookie();
-    }
-  }
 
   @api
   verifyBrowserIdWithUniqueId() {
