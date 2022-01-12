@@ -78,8 +78,6 @@ export default class CookieConsent extends LightningElement {
 
   @api
   receiveCookiesFromHead(e) {
-    console.log('caught event');
-    console.log(e.detail);
     this.uniqueId = e.detail;
     if (this.uniqueId) {
       this.verifyBrowserIdWithUniqueId();
