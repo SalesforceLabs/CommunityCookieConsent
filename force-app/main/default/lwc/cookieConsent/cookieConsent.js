@@ -112,7 +112,7 @@ export default class CookieConsent extends LightningElement {
     getCookieData()
       .then(data => {
         this.cookieData = [...data];
-
+        console.log('cookies', JSON.stringify(this.cookieData));
         this.setStartingCookiePreferences(data);
         this.loading = false;
       })
