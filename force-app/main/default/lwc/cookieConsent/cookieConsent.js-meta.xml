@@ -23,6 +23,7 @@
             <property name="rejectButtonLabel" type="String" default="" label="Reject Button Label"/>
             <property name="viewCookiesLabel" type="String" default="" label="View Cookies Link Label"/>
             <property name="viewCookiesLink" type="String" default="" label="View Cookies Link"/>
+            <property name="openTargetWindow" type="String" default="_blank" label="Target window for links"/>
             <property name="cookieFooterRelative" type="Boolean" default="false" label="Used Relative Footer Positioning" description="If selected, the footer will be no longer be fixed to the window"/>
             <property name="cookieFooterPadding" type="String" default="small" datasource="xx-small, x-small, small, medium, large, none" label="Footer Padding"/>
             <property name="cookieFooterButtonAlignment" type="String" default="left" datasource="left, center, right" label="Footer Button Alignment"/>
