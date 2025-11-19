@@ -28,6 +28,7 @@ export default class CookieConsent extends LightningElement {
   @api informationButtonLink = "https://www.salesforce.com";
   @api viewCookiesLabel = "View Cookies";
   @api viewCookiesLink = "https://www.salesforce.com";
+  @api openTargetWindow = "_blank";
   @api confirmButtonLabel = "Confirm Preferences";
   @api rejectButtonLabel = "Leave Site";
   @api cookieFooterRelative = false;
@@ -165,7 +166,7 @@ export default class CookieConsent extends LightningElement {
   }
 
   rejectCookies() {
-    window.history.back();
+    window.location.href="about:blank"; 
   }
 
   get shouldIShowCookieDialog() {
@@ -218,12 +219,12 @@ export default class CookieConsent extends LightningElement {
 
   informationButtonSelected() {
     let url = this.informationButtonLink;
-    window.open(url, "_blank");
+    window.open(url, this.openTargetWindow);
   }
 
   cookiesButtonSelected() {
     let url = this.viewCookiesLink;
-    window.open(url);
+    window.open(url, this.openTargetWindow);
   }
 
   get headingStyle() {
